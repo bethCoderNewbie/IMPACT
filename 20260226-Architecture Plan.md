@@ -113,7 +113,7 @@ All lists are built in SharePoint. Fields marked **[R]** are required for operat
 | IMPACT Start Date | Date | Date of first project contribution | Yes **[R]** | Onboarding time = Start − HR Clearance |
 | Status | Choice | Active, Completed, Departed | Yes **[R]** | Student retention rate |
 | Training Completed | Yes/No | Default: No | Yes **[R]** | Training completion rate |
-| Training Completion Date | Date | Auto-set when Training Completed = Yes | Yes | Time-to-ready metric |
+| Training Completion Date | Date | Set by Flow 5 when Training Completed is changed to Yes (SharePoint cannot detect a column value change and set a date field natively) | Yes | Time-to-ready metric |
 | Pre-Assessment Score | Number (1–5) | From onboarding self-assessment form | Yes **[AACSB]** | Skill delta |
 | Post-Assessment Score | Number (1–5) | From exit self-assessment form | Yes **[AACSB]** | Skill delta |
 | PM Evaluation Score | Number (1–5) | Entered by Project Manager at semester end | Yes **[AACSB]** | Learning outcome achievement |
@@ -134,7 +134,7 @@ All lists are built in SharePoint. Fields marked **[R]** are required for operat
 | Client Contact Email | Text | For automated follow-up | Yes | Flow 1 routing |
 | Kansas-Based | Yes/No | Default: Yes | Yes **[R]** | Kansas partner % (legislative) |
 | Industry Sector | Choice | Healthcare, Finance, Nonprofit, Retail, Manufacturing, Education, Government, Other | Yes **[R]** | Sectors represented |
-| Repeat Client | Yes/No | Auto-set: Yes if Client Org exists in prior row | Yes **[R]** | Partner retention rate |
+| Repeat Client | Yes/No | Manual entry — ops marks Yes when re-engagement is confirmed (SharePoint calculated columns cannot query other list rows; a Power Automate flow can automate this if priority warrants) | Yes **[R]** | Partner retention rate |
 | First Engagement Date | Date | Date of first project kickoff with this client | Yes **[R]** | New vs. returning partner |
 | Project Start Date | Date | | Yes | Timeline tracking |
 | Project End Date (Planned) | Date | | Yes **[R]** | On-time delivery baseline |
@@ -143,7 +143,7 @@ All lists are built in SharePoint. Fields marked **[R]** are required for operat
 | Assigned Team | Lookup → Teams | Teams team name | Yes | Team → project mapping |
 | Client Satisfaction Score | Number (1–5) | From client feedback form (post-project) | Yes **[R]** | Client satisfaction metric |
 | NDA Required | Yes/No | Default: No | Yes | Confidentiality controls |
-| Estimated Value Delivered ($) | Calculated | = Total Client Hours × Rate Proxy | Yes **[R]** | Legislative value metric |
+| Estimated Value Delivered ($) | Number | Entered manually by PM at project close: sum of Hours — Client Work from team task reports × agreed rate proxy. Cross-list aggregation is not supported by SharePoint calculated columns. | Yes **[R]** | Legislative value metric |
 | Notes | Multi-line text | Internal use | No | — |
 
 ---
@@ -164,6 +164,8 @@ All lists are built in SharePoint. Fields marked **[R]** are required for operat
 | Submission Timestamp | Date/Time | Auto-set on form submit | Yes **[R]** | Submission rate metric |
 | Reviewed by PM | Yes/No | PM marks after review | Yes | Quality gate |
 
+> **Routing note:** Flow 3 sends one form link but responses must route to the correct team's list. A single shared form has no native mechanism to target 5–9 separate team-specific lists. See Open Question Q7 for the three routing architecture options. Decision required before Flow 3 is built.
+
 ---
 
 ### List 4: Onboarding Tracker
@@ -179,7 +181,7 @@ All lists are built in SharePoint. Fields marked **[R]** are required for operat
 | Access Provisioned | Yes/No | Set manually by Operations | Yes | Access gate |
 | SOP Training Assigned | Yes/No | Set by Operations | Yes | Training gate |
 | Training Completed | Yes/No | Linked to Student Roster field | Yes | Completion tracking |
-| Onboarding Complete | Yes/No | All above = Yes → auto-set | Yes **[R]** | Onboarding time metric |
+| Onboarding Complete | Yes/No | Set by Flow 5 when all prerequisite fields = Yes (SharePoint cannot evaluate multiple columns and flip a computed field natively) | Yes **[R]** | Onboarding time metric |
 | Days to Complete | Calculated | = Onboarding Complete Date − HR Clearance Date | Yes **[R]** | Onboarding speed metric |
 | Notes | Multi-line text | Internal | No | — |
 
@@ -192,7 +194,7 @@ All lists are built in SharePoint. Fields marked **[R]** are required for operat
 | Field Name | Type | Values / Format | Required | Reporting Use |
 |---|---|---|---|---|
 | Student Name | Text | (Not linked — FERPA: consent required first) | Yes | Story attribution |
-| Consent Given | Yes/No | Must = Yes before row is visible externally | Yes **[R]** | FERPA gate |
+| Consent Given | Yes/No | Must = Yes — FERPA gate (view filter alone is insufficient; see enforcement note below) | Yes **[R]** | FERPA gate |
 | Graduation Date | Date | MM/YYYY | Yes **[R]** | Post-graduation timeline |
 | Outcome Type | Choice | Internship, Full-Time Job, Graduate School, Other | Yes **[R]** | Categorized outcomes |
 | Employer / Institution | Text | | Yes **[R]** | Industry tracking |
@@ -201,6 +203,8 @@ All lists are built in SharePoint. Fields marked **[R]** are required for operat
 | IMPACT Team / Project | Lookup → Master Project List | | Yes **[R]** | Attribution to specific engagement |
 | Quote / Story | Multi-line text | Student-provided quote | No | Marketing, donor use |
 | Submitted By | Person (M365) | Student or PM | Yes | Audit trail |
+
+> **FERPA enforcement note:** A SharePoint list view filter on `Consent = Yes` is not sufficient — any user with Read access can query the list API and see all rows including those with `Consent = No`. FERPA requires access control at the item level. See Open Question Q6 for options. Decision required before Hub site is built.
 
 ---
 
@@ -308,12 +312,25 @@ Trigger: Scheduled — every Monday 8:00 AM
   → Leadership gets a digest email summary (via Power Automate)
 ```
 
+> **Routing gap:** A single shared form cannot route responses to 5–9 separate team-specific lists without knowing which team the student belongs to. See Open Question Q7 — this must be resolved before Flow 3 is designed.
+
 ### Flow 4: Success Story Capture
 
 ```
 Trigger: Microsoft Form submitted (by student or PM)
   → Append to Success Stories list on Hub site
   → Post to Leadership Teams channel for visibility
+```
+
+### Flow 5: Field State Automation
+
+```
+Trigger: Student Roster item updated — Training Completed changed to Yes, Training Completion Date is blank
+  → Set Training Completion Date = current date
+
+Trigger: Onboarding Tracker item updated — all prerequisite fields = Yes, Onboarding Complete = No
+  → Set Onboarding Complete = Yes
+  → Set Onboarding Complete Date = current date (enables Days to Complete calculated column)
 ```
 
 ---
@@ -360,6 +377,23 @@ No structural changes needed — the architecture absorbs new teams by design.
 
 ---
 
+## Pre-Build Verification Checklist
+
+Confirm all items with WSU IT and WSU HR before starting the Build Order. A "No" or "Unknown" on any item requires a plan adjustment before that component is built.
+
+| # | Item | Owner | Verified? |
+|---|---|---|---|
+| V1 | `barton.impact@wichita.edu` has a Power Automate standard license (not a limited seeded plan) | WSU IT | [ ] |
+| V2 | `barton.impact@wichita.edu` has Full Access (not just Send As) on the shared mailbox | WSU IT | [ ] |
+| V3 | WSU IT will grant OAuth consent for the Power Automate → Exchange/Outlook connector | WSU IT | [ ] |
+| V4 | WSU IT will register the IMPACT Hub as a hub site and associate all team SharePoint sites to it | WSU IT | [ ] |
+| V5 | WSU tenant plan supports SharePoint hub site associations | WSU IT | [ ] |
+| V6 | Student WSU accounts include Teams, Planner, SharePoint Online, and Forms access | WSU IT | [ ] |
+| V7 | Planner board copy works as expected on the current WSU tenant (legacy Planner vs. new Planner in Teams) | WSU IT / Operations | [ ] |
+| V8 | Obtain one real WSU HR clearance email — confirm subject line keywords match Flow 1 logic before finalizing | WSU HR / Operations | [ ] |
+
+---
+
 ## Open Questions
 
 | # | Question | Status |
@@ -368,4 +402,11 @@ No structural changes needed — the architecture absorbs new teams by design.
 | Q2 | Is Microsoft Forms sufficient for HR paperwork? | **Resolved** — HR handles all legal paperwork. IMPACT scope is operational onboarding only. See IMPACT Onboarding Scope section. |
 | Q3 | Should the password vault use a credential manager long-term? | **Resolved** — Social media: use native team accounts. Other credentials: restricted SharePoint List short-term; Bitwarden Teams long-term. |
 | Q4 | Who is the Power Automate owner when the current team rolls off? | **Resolved** — All flows owned by `barton.impact@wichita.edu` service account. Faculty/staff holds backup admin. |
-| Q5 | Will client-facing project data require confidentiality/NDA controls on team sites? | **Open** — Needs review per client engagement. Consider restricting client deliverable folders to PM + Leadership only. |
+| Q5 | Will client-facing project data require confidentiality/NDA controls on team sites? | **Open** — Options: (a) item-level permissions via Power Automate on client deliverable folders; (b) restricted private channel in Teams; (c) PM-only folder with manual permissions; (d) accept risk at current scale. Decision required before team site template is finalized. |
+| Q6 | How should FERPA be enforced on the Success Stories list? | **Open** — A view filter on Consent=Yes is insufficient; list API exposes all rows to users with Read access. Options: (a) move list to Tier 2, surface approved stories on Hub via a web part with item-level permissions set by Flow 4; (b) keep on Hub, enforce item-level read via Power Automate when Consent changes to Yes. Decision required before Hub site is built. |
+| Q7 | How should weekly report Forms responses route to the correct team's list? | **Open** — A single shared form cannot auto-route to 5–9 separate lists. Options: (a) one form + one Flow 3 variant per team; (b) shared form with Team selector dropdown, Flow 3 branches by answer; (c) flatten to one Tier 2 list with a Team column. Decision required before Flow 3 is built. |
+| Q8 | What is the exact subject line format of WSU HR clearance emails? | **Open** — Flow 1 keyword matching is unvalidated. A false negative silently skips onboarding. Obtain a real email sample (V8) before finalizing Flow 1 logic. |
+| Q9 | Does the M365 license on `barton.impact@wichita.edu` cover all required Power Automate connectors? | **Open** — See V1, V2, V3. Verify with IT before designing any flows. |
+| Q10 | Does WSU IT support Hub site registration for the IMPACT Hub? | **Open** — See V4, V5. Confirm before starting Step 1 of build order. |
+| Q11 | Do student WSU accounts include Teams, Planner, and SharePoint access? | **Open** — See V6. Confirm before assuming Planner and file collaboration work for students. |
+| Q12 | Is native Planner board copy sufficient for team templating at scale? | **Open** — See V7. Validate on the WSU tenant before using as the scaling mechanism for Steps 8–9 of the build order. |
