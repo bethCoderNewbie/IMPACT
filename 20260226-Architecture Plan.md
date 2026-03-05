@@ -41,6 +41,31 @@
 
 ---
 
+## Hub Incorporation Workflow
+
+To incorporate your existing separate Microsoft Teams into the IMPACT architecture, follow this three-step process:
+
+1.  **The "Parent" (The Hub Site):** Create (or have IT create) one SharePoint Communication Site called "IMPACT Hub." This is a clean, webpage-style site for your SOPs, news, and branding.
+2.  **The "Registration" (The Connection):** In the SharePoint Admin Center, IT must "Register" that IMPACT Hub site as an official Hub Site. This makes it the "Parent" of the organization.
+3.  **The "Association" (Linking the Projects):** You (or IT) then go to the settings of each existing Project Team Site and "Associate" them with the IMPACT Hub.
+
+### What happens after they are incorporated?
+
+Once your project sites are "Associated" with the Hub, four things happen automatically:
+
+*   **Shared Navigation:** The top navigation bar from your IMPACT Hub will appear at the top of every Project Team Site. Students can jump from their project file folder back to the "SOPs" or "Success Stories" on the Hub with one click.
+*   **Search Roll-up:** If you search for a document on the IMPACT Hub, Microsoft will search through all associated project sites at once (only showing the user files they already have permission to see).
+*   **News Aggregation:** If a Team Lead posts a "News" update on their specific Project Site, that headline can automatically "roll up" and appear on the main IMPACT Hub homepage for Leadership to see.
+*   **Shared Branding:** If you change the logo or colors on the IMPACT Hub, all your project sites will automatically update to match, ensuring a professional, unified look.
+
+**Summary of the Workflow:**
+*   **Step 1:** Create the "IMPACT Hub" (Tier 1).
+*   **Step 2:** IT registers it as a Hub.
+*   **Step 3:** IT/Ops "Associate" your current separate Teams to that Hub.
+*   **Result:** You have a unified network where students stay in their private project silos, but everything is visually and functionally connected to the central IMPACT organization.
+
+---
+
 ## Tier 1: IMPACT Hub (Communication Site)
 
 **Purpose:** Public-facing org layer. All members can read; leadership writes.
@@ -143,7 +168,7 @@ All lists are built in SharePoint. Fields marked **[R]** are required for operat
 | Assigned Team | Lookup → Teams | Teams team name | Yes | Team → project mapping |
 | Client Satisfaction Score | Number (1–5) | From client feedback form (post-project) | Yes **[R]** | Client satisfaction metric |
 | NDA Required | Yes/No | Default: No | Yes | Confidentiality controls |
-| Estimated Value Delivered ($) | Number | Entered manually by PM at project close: sum of Hours — Client Work from team task reports × agreed rate proxy. Cross-list aggregation is not supported by SharePoint calculated columns. | Yes **[R]** | Legislative value metric |
+| Estimated Value Delivered ($) | Number | Entered manually by PM at project close: sum of Hours — Client Work from team task reports × agreed rate proxy (currently estimated at $50–$75/hour). Cross-list aggregation is not supported by SharePoint calculated columns. | Yes **[R]** | Legislative value metric |
 | Notes | Multi-line text | Internal use | No | — |
 
 ---
@@ -379,18 +404,34 @@ No structural changes needed — the architecture absorbs new teams by design.
 
 ## Pre-Build Verification Checklist
 
-Confirm all items with WSU IT and WSU HR before starting the Build Order. A "No" or "Unknown" on any item requires a plan adjustment before that component is built.
+Confirm all items with WSU IT, WSU HR, and IMPACT Leadership before starting the Build Order. A "No" or "Unknown" on any item requires a plan adjustment before that component is built.
 
-| # | Item | Owner | Verified? |
+### 1. IT Infrastructure (WSU IT)
+| # | Verification Item | Owner | Verified? |
 |---|---|---|---|
-| V1 | `barton.impact@wichita.edu` has a Power Automate standard license (not a limited seeded plan) | WSU IT | [ ] |
-| V2 | `barton.impact@wichita.edu` has Full Access (not just Send As) on the shared mailbox | WSU IT | [ ] |
-| V3 | WSU IT will grant OAuth consent for the Power Automate → Exchange/Outlook connector | WSU IT | [ ] |
-| V4 | WSU IT will register the IMPACT Hub as a hub site and associate all team SharePoint sites to it | WSU IT | [ ] |
-| V5 | WSU tenant plan supports SharePoint hub site associations | WSU IT | [ ] |
-| V6 | Student WSU accounts include Teams, Planner, SharePoint Online, and Forms access | WSU IT | [ ] |
-| V7 | Planner board copy works as expected on the current WSU tenant (legacy Planner vs. new Planner in Teams) | WSU IT / Operations | [ ] |
-| V8 | Obtain one real WSU HR clearance email — confirm subject line keywords match Flow 1 logic before finalizing | WSU HR / Operations | [ ] |
+| V1 | `barton.impact@wichita.edu` has a Power Automate license (confirm no "seeded" plan limits) | WSU IT | [ ] |
+| V2 | `barton.impact@wichita.edu` has **Full Access** (not just Send As) on the shared mailbox | WSU IT | [ ] |
+| V3 | WSU IT will grant OAuth consent for the Power Automate → Exchange and SharePoint connectors | WSU IT | [ ] |
+| V4 | WSU IT will register the IMPACT Hub as a hub site and associate 9+ team SharePoint sites | WSU IT | [ ] |
+| V5 | Confirm WSU tenant plan supports 9+ SharePoint hub site associations | WSU IT | [ ] |
+| V6 | Student `@shockers.wichita.edu` accounts include Teams, Planner, SharePoint, and Forms access | WSU IT | [ ] |
+| V7 | Planner board copy (within Teams) works as expected on the current WSU tenant | WSU IT / Ops | [ ] |
+| V8 | Confirm WSU IT policy for disabling **External Sharing** on Tier 3 team sites | WSU IT | [ ] |
+| V9 | Verify no MFA or Conditional Access policies block the headless service account (`barton.impact`) | WSU IT | [ ] |
+
+### 2. Data & Process (Operations)
+| # | Verification Item | Owner | Verified? |
+|---|---|---|---|
+| V10 | Obtain one real WSU HR clearance email — confirm subject/keywords for Flow 1 logic | WSU HR / Ops | [ ] |
+| V11 | Identify the "Source of Truth" file for the initial Student Roster migration | Operations | [ ] |
+| V12 | Confirm legacy data volume fits "Minor History" assumption (<1GB total) | Operations | [ ] |
+
+### 3. Policy & Strategy (Leadership)
+| # | Verification Item | Owner | Verified? |
+|---|---|---|---|
+| V13 | Approve the **48-hour Migration Freeze** window for the initial transition | Leadership | [ ] |
+| V14 | Approve the **$50–$75/hour market rate** proxy for "Value Delivered" reporting | Leadership | [ ] |
+| V15 | Identify the Faculty Lead for **AACSB Learning Outcome** sign-off (ref: List 1) | Leadership | [ ] |
 
 ---
 
@@ -398,15 +439,15 @@ Confirm all items with WSU IT and WSU HR before starting the Build Order. A "No"
 
 | # | Question | Status |
 |---|---|---|
-| Q1 | Who owns provisioning — IT or Operations? | **Resolved** — IT creates sites; Operations configures and populates. See Provisioning Process section. |
-| Q2 | Is Microsoft Forms sufficient for HR paperwork? | **Resolved** — HR handles all legal paperwork. IMPACT scope is operational onboarding only. See IMPACT Onboarding Scope section. |
-| Q3 | Should the password vault use a credential manager long-term? | **Resolved** — Social media: use native team accounts. Other credentials: restricted SharePoint List short-term; Bitwarden Teams long-term. |
-| Q4 | Who is the Power Automate owner when the current team rolls off? | **Resolved** — All flows owned by `barton.impact@wichita.edu` service account. Faculty/staff holds backup admin. |
-| Q5 | Will client-facing project data require confidentiality/NDA controls on team sites? | **Open** — Options: (a) item-level permissions via Power Automate on client deliverable folders; (b) restricted private channel in Teams; (c) PM-only folder with manual permissions; (d) accept risk at current scale. Decision required before team site template is finalized. |
-| Q6 | How should FERPA be enforced on the Success Stories list? | **Open** — A view filter on Consent=Yes is insufficient; list API exposes all rows to users with Read access. Options: (a) move list to Tier 2, surface approved stories on Hub via a web part with item-level permissions set by Flow 4; (b) keep on Hub, enforce item-level read via Power Automate when Consent changes to Yes. Decision required before Hub site is built. |
-| Q7 | How should weekly report Forms responses route to the correct team's list? | **Open** — A single shared form cannot auto-route to 5–9 separate lists. Options: (a) one form + one Flow 3 variant per team; (b) shared form with Team selector dropdown, Flow 3 branches by answer; (c) flatten to one Tier 2 list with a Team column. Decision required before Flow 3 is built. |
-| Q8 | What is the exact subject line format of WSU HR clearance emails? | **Open** — Flow 1 keyword matching is unvalidated. A false negative silently skips onboarding. Obtain a real email sample (V8) before finalizing Flow 1 logic. |
-| Q9 | Does the M365 license on `barton.impact@wichita.edu` cover all required Power Automate connectors? | **Open** — See V1, V2, V3. Verify with IT before designing any flows. |
-| Q10 | Does WSU IT support Hub site registration for the IMPACT Hub? | **Open** — See V4, V5. Confirm before starting Step 1 of build order. |
-| Q11 | Do student WSU accounts include Teams, Planner, and SharePoint access? | **Open** — See V6. Confirm before assuming Planner and file collaboration work for students. |
-| Q12 | Is native Planner board copy sufficient for team templating at scale? | **Open** — See V7. Validate on the WSU tenant before using as the scaling mechanism for Steps 8–9 of the build order. |
+| Q1 | **Provisioning Ownership** — Who creates the sites? | **Resolved** — IT creates sites; Operations configures. |
+| Q2 | **HR Scope** — Is Microsoft Forms sufficient for legal paperwork? | **Resolved** — No. HR handles legal; IMPACT handles operational onboarding. |
+| Q3 | **Password Vault** — Long-term credential strategy? | **Resolved** — Social media: native; others: SharePoint (short) / Bitwarden (long). |
+| Q4 | **Flow Ownership** — Who owns Power Automate when staff rolls off? | **Resolved** — `barton.impact@wichita.edu` service account. |
+| Q5 | **Confidentiality** — How to handle client NDA data on team sites? | **Open** — Options: (a) Power Automate folder permissions; (b) Private Channels. |
+| Q6 | **FERPA** — How to enforce Consent=Yes on Success Stories? | **Open** — A view filter is insufficient. Item-level permissions required via Flow 4. |
+| Q7 | **Weekly Routing** — How to route one Form to 9 separate lists? | **Open** — Options: (a) 1 Form per team; (b) Dropdown + Flow branching; (c) Unified Tier 2 list. |
+| Q8 | **Hub Capacity** — Does WSU IT support the IMPACT Hub registration? | **Open** — Ref V4, V5. Confirm before Step 1. |
+| Q9 | **Student Licensing** — Do students have full Teams/Planner/Forms access? | **Open** — Ref V6. Confirm before assuming Planner functionality. |
+| Q10 | **Trigger Logic** — What is the exact subject line of HR clearance emails? | **Open** — Ref V10. Needed for Flow 1/2 reliability. |
+| Q11 | **Market Rate** — Is the $50-$75/hr proxy approved for legislative reporting? | **Open** — Ref V14. Required for Master Project List value field. |
+| Q12 | **AACSB Lead** — Who signs off on the skill delta metrics? | **Open** — Ref V15. Required for List 1 data validation. |

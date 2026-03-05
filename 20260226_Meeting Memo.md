@@ -8,3 +8,13 @@
 
 # Constraints
 * Microsoft Office 365 licenses
+
+**Summary of the Workflow:**
+*   **Step 1:** Create the SharePoint Communication Site "IMPACT Hub" (Tier 1). 
+       * Why this product? Communication sites are designed for "one-to-many" broadcasting. They offer a clean, webpage-like interface with no "Teams" chat attached, making them ideal for a stable, program-wide landing page for SOPs, Branding, and Archives.
+       * Key Feature: This is the site that IT will register as the "Hub" parent in the SharePoint Admin Center.
+*   **Step 2:** IT registers it as a Hub, and create SharePoint Team Site (Stand-alone)
+    * Why this product? Unlike a "Teams-connected" site, a stand-alone Team Site provides a secure, folder-centric environment for sensitive data (Rosters, Finance) without the "noise" of a Microsoft Teams chat. It is easier to restrict access to only 2–3 key individuals (Leadership/Ops) without creating an unnecessary Team in everyone's sidebar.
+    * Supporting Product: Microsoft Lists (Used within this site to track the Master Roster and Project List).
+*   **Step 3:** IT/Ops "Associate" your current separate Teams to that Hub.
+*   **Result:** You have a unified network where students stay in their private project silos, but everything is visually and functionally connected to the central IMPACT organization.
