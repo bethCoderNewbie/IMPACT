@@ -663,4 +663,124 @@ In Power BI Desktop:
 
 ---
 
+---
+
+## Roadmap & TODO Per Week — Spring 2026
+
+> **Current date:** 2026-03-31 (Week 12 of 15)
+> Weeks calculated from semester start Jan 15. Interview window = Weeks 12–13. Dean's Report due end of semester.
+
+---
+
+### IMMEDIATE — This Week (Week 12 | Mar 30 – Apr 5)
+
+**Spec corrections (do before any Power BI build)**
+- [ ] Update all chart Y-axes from 1–5 → 1–4 scale (Pages 2 & 4)
+- [ ] Decide AACSB achievement threshold on 1–4 scale (keep 3.5 = 87.5th percentile, or change to 3.0 = 75%)
+- [ ] Update `AtThreshold` DAX formula to match decided threshold
+- [ ] Define `PM_Evaluation_Score` formula: simple average of LO1–LO5 interview ratings (`(LO1+LO2+LO3+LO4+LO5)/5`)
+- [ ] Update Data Entry Assumptions section: PM Evaluation Score range is 1–4, not 1–5
+
+**SharePoint setup**
+- [ ] Create Student Roster list — all columns from Data Model (line 30–33), add LO1–LO5 individual score columns
+- [ ] Create Success Stories list — StudentID, OutcomeType, Salary, Employer, Date, Consent
+- [ ] Create Master Project List — ProjectID through EstValueDelivered
+- [ ] Confirm single unified Weekly Task Reports list (not per-team) per SharePoint Connection Note recommendation
+
+**Interviews — begin collecting data**
+- [ ] Distribute Advanced Interview Template to Team Leads (`Focus-Group-Interview-Template.md`)
+- [ ] Distribute Mini Interview Template to Team Leads (`20260329-Focus-Group-Interview-Template.md`)
+- [ ] Administer Post Self-Assessment Form to all 30 students (`Pre-Post-Self-Assessment-Form.md`)
+
+---
+
+### Week 13 | Apr 6 – Apr 12
+
+**Data entry sprint**
+- [ ] Enter all 30 post self-assessment scores → Student Roster (`Post_Assessment_Score`, `LO1_Post`–`LO5_Post`)
+- [ ] Enter all 30 interview LO ratings → Student Roster (`PM_Evaluation_Score` = avg of LO1–LO5 observer scores)
+- [ ] Enter career outcomes from Mini Interview Module 3 → Success Stories list
+- [ ] Enter project details → Master Project List (client, sector, dates, client sat score if collected)
+- [ ] Begin retroactive weekly hours entry → Weekly Task Reports (ask students to estimate weeks 1–12)
+
+**Power BI — build what's unblocked**
+- [ ] Step 1: Connect Power BI Desktop to SharePoint (all 4 lists)
+- [ ] Step 2: Build calculated columns (SkillDelta, OnTime, AtThreshold, OnTimeDelivery)
+- [ ] Step 3: Write all DAX measures
+- [ ] Step 4: Build **Page 3 — Career Outcomes** (cleanest data, build first)
+- [ ] Step 5: Build **Page 1 — Executive Overview** (requires Student Roster + Success Stories)
+
+---
+
+### Week 14 | Apr 13 – Apr 19
+
+**Power BI — complete remaining pages**
+- [ ] Step 6: Build **Page 2 — Student Growth & AACSB Outcomes**
+  - Note: SkillDelta will show correctly only if pre-scores exist — see Pre-score gap below
+  - PM Evaluation Score gauges (Visual 2 & 4) will be ready from Week 13 data entry
+- [ ] Step 7: Build **Page 4 — Project & Client Performance**
+  - Requires: Master Project List complete + at least partial Weekly Task Reports
+- [ ] Step 8: Build **Page 5 — Operational Health**
+  - Requires: Weekly Task Reports populated (retroactive entry from students)
+- [ ] Step 9: Apply design system — Sydney & Naya (palette, fonts, layout grid)
+- [ ] Step 10: Add persistent nav panel + Semester/Team slicers
+
+---
+
+### Week 15 | Apr 20 – Apr 26
+
+**Validation & polish**
+- [ ] Validate KPI cards against raw SharePoint data (spot-check 5 students manually)
+- [ ] Confirm `CohortAchievementRate` matches expected % with real data
+- [ ] Confirm salary aggregate shows correctly — no individual names visible
+- [ ] Confirm slicers (Team, Semester) filter all 5 pages consistently
+- [ ] Replace all sample data callouts with "live data" note in footer
+- [ ] Step 11: Publish to Power BI Service → share link with Leadership
+
+---
+
+### Post-Semester | Apr 27 – May 3
+
+**Dean's Report**
+- [ ] Pull best quotes from completed interview templates (Mini + Advanced)
+- [ ] Pull career outcome highlights from Success Stories list
+- [ ] Confirm media/photo consent for any students featured
+- [ ] Compile Closing-the-Loop Memo for AACSB using Page 2 achievement rate data
+
+**Handoff**
+- [ ] Share Power BI dashboard link with Dean, Advisory Board contacts
+- [ ] Export PDF snapshots of all 5 pages for Dean's Bound Report insert
+- [ ] Archive all 30 completed interview documents to `Dean_report > Interviews > Spring 2026`
+
+---
+
+### Pre-Score Gap — Action Required Before Fall 2026
+
+The Spring 2026 cohort has **no pre-assessment baseline** (form was not deployed at Week 1). This affects:
+- `SkillDelta` on Page 2 — will return BLANK for all Spring 2026 students
+- `Avg Skill Delta` KPI on Page 1 — will show no data
+
+**Mitigation for Spring 2026:** Hide or annotate SkillDelta visuals with "Pre-assessment baseline not available for Spring 2026 cohort — launching Fall 2026."
+
+**Action for Fall 2026:**
+- [ ] Deploy `Pre-Post-Self-Assessment-Form.md` in Week 1 orientation (before any project work)
+- [ ] Enter all 30 pre-scores into Student Roster by end of Week 1
+- [ ] Deploy Weekly Task Report form on Day 1 (do not rely on retroactive entry)
+- [ ] Deploy Client Satisfaction survey at project midpoint AND delivery
+
+---
+
+### Blocked Items Tracker
+
+| Item | Blocks | Owner | Status |
+|---|---|---|---|
+| AACSB threshold decision (3.0 vs 3.5 on 1–4 scale) | Page 2 gauges, DAX `AtThreshold` | Beth | Decide this week |
+| PM_Evaluation_Score formula (avg vs. weighted) | All AACSB visuals | Beth | Decide this week |
+| SharePoint lists created | All data entry | Operations | Not started |
+| Weekly Task Report form built | Pages 4 & 5 | Operations | Not started |
+| Client satisfaction survey built | Page 4 ClientSatScore | Operations | Not started |
+| Pre-assessment form (Spring 2026) | Page 2 SkillDelta | N/A | Cannot backfill — Fall 2026 |
+
+---
+
 *This specification was prepared for the Spring 2026 semester. All sample data is illustrative — replace with live SharePoint data before presenting to the Dean or Advisory Board.*

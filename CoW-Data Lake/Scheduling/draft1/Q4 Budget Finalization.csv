@@ -1,0 +1,6 @@
+Title,ParentRequestID,AssignedGroup,MeetingTime,AttendeesEmail
+"Budget-GrpA","2","Mayor + Council 1","12/11/2025 14:00","mayor@city.gov; c1@city.gov"
+"Budget-GrpB","2","Council 2 + Council 3","12/11/2025 14:30","c2@city.gov; c3@city.gov"
+"Budget-GrpC","2","Council 4 + Council 5","12/11/2025 15:00","c4@city.gov; c5@city.gov"
+"Zoning-GrpA","1","Mayor + Council 2","12/10/2025 09:00","mayor@city.gov; c2@city.gov"
+"Zoning-GrpB","1","Council 1 + Council 3","12/10/2025 09:30","c1@city.gov; c3@city.gov"

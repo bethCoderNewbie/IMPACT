@@ -1,7 +1,29 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(\"C:\\\\Users\\\\bichn\\\\MSBA\\\\IMPACT\\\\.venv\\\\Scripts\\\\python.exe\" \"C:\\\\Users\\\\bichn\\\\MSBA\\\\IMPACT\\\\CoW-Data Lake\\\\20251104-2nd Meeting\\\\governance_analysis.py\")",
+      "mcp__MCP_DOCKER__list_directory",
+      "WebFetch(domain:www.suitefiles.com)",
+      "WebFetch(domain:filearchitect.com)",
+      "WebFetch(domain:neonbrand.com)",
+      "Bash(BASE=\"C:/Users/bichn/MSBA/IMPACT/CoW-Data Lake/20260401-Compliance Report\")",
+      "Bash(mkdir -p \"$BASE/00-Admin\" \"$BASE/01-Presales\" \"$BASE/02-Proposal/Draft-Proposal\" \"$BASE/02-Proposal/Final-Proposal\" \"$BASE/03-Contract/Change-Orders\" \"$BASE/04-Kickoff\" \"$BASE/05-Discovery/Interview-Notes\" \"$BASE/05-Discovery/Gap-Analysis-Inputs\" \"$BASE/05-Discovery/Workshop-Outputs\" \"$BASE/06-Delivery/06a-Governance-Review/FINAL\" \"$BASE/06-Delivery/06b-System-Requirements/FINAL\" \"$BASE/07-Supporting-Evidence/Data-Quality-Findings\" \"$BASE/07-Supporting-Evidence/Policy-References\" \"$BASE/07-Supporting-Evidence/System-Screenshots\" \"$BASE/08-Presentations\" \"$BASE/09-Closure\" \"$BASE/_Internal/Working-Papers\" \"$BASE/_Internal/Internal-Analysis\" \"$BASE/_Internal/Team-Communications\")",
+      "mcp__MCP_DOCKER__read_file",
+      "mcp__MCP_DOCKER__start_process",
+      "WebFetch(domain:data.kcmo.org)",
+      "WebFetch(domain:opendatapolicyhub.sunlightfoundation.com)",
+      "WebFetch(domain:data.austintexas.gov)",
+      "Bash(tasklist)",
+      "Bash(taskkill /PID 12208 /F)",
+      "Bash(taskkill /PID 14452 /F)",
+      "Bash(taskkill /PID 132 /F)",
+      "Bash(taskkill //PID 12208 //F)",
+      "Bash(taskkill //PID 14452 //F)",
+      "Bash(taskkill //PID 132 //F)",
+      "Bash(taskkill //PID 27660 //F)",
+      "Bash(rm -f \"C:/Users/bichn/MSBA/IMPACT/.git/index.lock\")",
+      "Bash(taskkill //PID 25108 //F)"
     ]
   }
 }

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Infrastructure Stack - Interactive Kitchen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e;
+        }
+
+        .font-pixel {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Enhanced Tooltip Styles */
+        [data-tooltip] {
+            position: relative;
+            cursor: pointer;
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: pre-wrap;
+            width: 340px;
+            text-align: left;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 100;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1);
+        }
+
+        /* Head Chef (K8s) - Enhanced Animation */
+        #chef-k8s {
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+        #chef-k8s:hover {
+            transform: translateY(-10px) scale(1.05);
+        }
+        #chef-k8s:active {
+            transform: scale(0.95);
+        }
+        #chef-k8s.working {
+            animation: pulse-chef 1s infinite;
+        }
+        @keyframes pulse-chef {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 30px rgba(59, 130, 246, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        /* Server Stations - Enhanced Glow Effects */
+        .server-station {
+            background: linear-gradient(145deg, #2d3748, #1a202c);
+            border: 4px solid #4a5568;
+            border-radius: 16px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4), inset 0 2px 8px rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+        .server-station::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+        }
+        .server-station:hover::before {
+            left: 100%;
+        }
+        .server-station.active {
+            border-color: #34D399;
+            box-shadow: 0 0 30px rgba(52, 211, 153, 0.6), 0 8px 16px rgba(0,0,0,0.4);
+            animation: server-active 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        @keyframes server-active {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08) rotate(2deg); }
+            100% { transform: scale(1); }
+        }
+
+        /* Enhanced Moving Icons */
+        .moving-icon {
+            position: absolute;
+            font-size: 3rem;
+            z-index: 50;
+            transition: all 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            text-shadow: 0 6px 12px rgba(0,0,0,0.5);
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+        }
+
+        /* Spark Prep Line - Enhanced Processing Animation */
+        #prep-spark {
+            position: relative;
+            overflow: hidden;
+        }
+        #prep-spark::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        #prep-spark.processing::before {
+            animation: process-sweep 1.5s infinite;
+        }
+        #prep-spark.processing {
+            border-color: #F59E0B;
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.6);
+        }
+        @keyframes process-sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Pantry - Enhanced Pulse Animation */
+        #pantry-minio {
+            position: relative;
+            overflow: hidden;
+        }
+        #pantry-minio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(52, 211, 153, 0.3);
+            transform: translate(-50%, -50%);
+            transition: all 0.6s;
+        }
+        #pantry-minio.accessed::after {
+            animation: pantry-ripple 1s 2;
+        }
+        @keyframes pantry-ripple {
+            0% { width: 0; height: 0; opacity: 1; }
+            100% { width: 200%; height: 200%; opacity: 0; }
+        }
+
+        /* Enhanced Button Styles */
+        .btn-base {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .btn-base::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .btn-base:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+        .btn-base:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        }
+        .btn-base:active {
+            transform: translateY(0);
+        }
+
+        .btn-trino {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+        }
+        .btn-clickhouse {
+            background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+        }
+        .btn-gemini {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+
+        /* Spinner - Enhanced */
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border-top: 5px solid #fff;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Foundation Floor - Enhanced Pattern */
+        #foundation-floor {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        /* Glow Effects */
+        .glow-effect {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px currentColor); }
+            to { filter: drop-shadow(0 0 20px currentColor); }
+        }
+
+        /* Particle Effects */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-rise 2s linear forwards;
+        }
+        @keyframes particle-rise {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-100px); }
+        }
+
+        /* Section Labels */
+        .layer-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            background: rgba(0,0,0,0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="w-screen h-screen text-white relative overflow-hidden">
+
+    <!-- Foundation: The Building (Hardware & OS) -->
+    <div id="foundation-floor" class="absolute inset-0 w-full h-full z-0">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="floor" patternUnits="userSpaceOnUse" width="100" height="100">
+                    <rect width="100" height="100" fill="#1a1a2e" />
+                    <rect x="0" y="0" width="50" height="50" fill="#22223b" />
+                    <rect x="50" y="50" width="50" height="50" fill="#22223b" />
+                    <circle cx="25" cy="25" r="2" fill="#4a4e69" opacity="0.3"/>
+                    <circle cx="75" cy="75" r="2" fill="#4a4e69" opacity="0.3"/>
+                </pattern>
+                <linearGradient id="floor-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#0f0f1e;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <rect fill="url(#floor)" width="100%" height="100%" />
+            <rect fill="url(#floor-gradient)" width="100%" height="100%" opacity="0.5" />
+        </svg>
+        <div class="absolute inset-0 border-8 border-gray-900"
+             data-tooltip="🏗️ THE FOUNDATION (Hardware & OS)
+
+Physical Linux servers (bare metal) - This is your base infrastructure:
+• Ubuntu or RHEL servers in racks
+• CPUs (Intel Xeon/AMD EPYC), RAM (256GB-1TB+), NVMe SSDs
+• Requires: Power, cooling, networking, physical data center space
+
+☁️ Cloud Equivalent: AWS EC2, Azure VMs, Google Compute Engine"></div>
+        <div class="layer-label absolute bottom-4 left-4">Layer 1: Foundation (Hardware & OS)</div>
+    </div>
+
+    <!-- Title -->
+    <h1 class="font-pixel text-2xl md:text-4xl text-center absolute top-5 left-1/2 -translate-x-1/2 z-50"
+        style="text-shadow: 3px 3px #F59E0B, 0 0 20px rgba(245, 158, 11, 0.5);">
+        Data Stack Kitchen
+    </h1>
+    <p class="text-center absolute top-20 left-1/2 -translate-x-1/2 z-50 text-gray-300 text-sm">
+        Click elements to see the data flow in action!
+    </p>
+
+    <!-- Head Chef (K8s) - Orchestration Layer -->
+    <div id="chef-k8s"
+         class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 p-6 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full shadow-2xl cursor-pointer"
+         data-tooltip="☸️ THE DATA CENTER OS (Kubernetes)
+
+The 'operating system' for your private cloud:
+• Manages containers (not bare metal anymore)
+• Auto-scaling, high availability, self-healing
+• Schedules Spark jobs, Trino queries, storage nodes
+
+Click me to dispatch work to servers!
+
+☁️ Cloud Equivalent: AWS EKS, Azure AKS, Google GKE">
+        <div class="text-7xl animate-bounce glow-effect">👨‍🍳</div>
+        <div class="absolute -top-3 -right-3 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-2 rounded-full shadow-lg animate-pulse">
+            K8s
+        </div>
+    </div>
+    <div class="layer-label absolute top-[28%] left-1/2 -translate-x-1/2 z-30">Layer 2: Orchestration (Kubernetes)</div>
+
+    <!-- Server Stations (Compute Nodes) -->
+    <div class="absolute top-1/2 left-1/4 -translate-x-1/2 z-10">
+        <div id="server-1" class="server-station p-6 w-56 h-32 flex flex-col items-center justify-center"
+             data-tooltip="💻 SERVER NODE 1
+
+A physical Linux server where containers run:
+• K8s assigns containers here dynamically
+• Runs Spark executors, Trino workers, etc.
+• Part of the compute cluster">
+            <span class="font-pixel text-sm mb-2">Server 1</span>
+            <span class="text-5xl">💻</span>
+        </div>
+    </div>
+    <div class="absolute top-1/2 right-1/4 -translate-x-1/2 z-10">
+        <div id="server-2" class="server-station p-6 w-56 h-32 flex flex-col items-center justify-center"
+             data-tooltip="🖥️ SERVER NODE 2
+
+Another physical server in the cluster:
+• K8s balances workload across all nodes
+• High availability: if one fails, work moves here
+• Shares compute resources">
+            <span class="font-pixel text-sm mb-2">Server 2</span>
+            <span class="text-5xl">🖥️</span>
+        </div>
+    </div>
+
+    <!-- Storage Layer (Data Lake Pantry) -->
+    <div id="pantry-minio"
+         class="absolute bottom-10 left-10 z-10 p-6 bg-gradient-to-br from-green-700 to-green-900 rounded-2xl shadow-2xl w-72 h-72 flex flex-col items-center justify-center border-4 border-green-600"
+         data-tooltip="💾 THE STORAGE LAYER (Data Lake)
+
+MinIO: S3-compatible object storage (Modern choice):
+• Stores raw data files (CSV, Parquet, JSON)
+• S3-compatible API (works with cloud tools)
+• Runs on Kubernetes
+• Supports table formats: Delta Lake, Iceberg, Hudi
+
+Alternative: HDFS (Hadoop DFS) - legacy option
+
+☁️ Cloud Equivalent: AWS S3, Azure Data Lake Gen2, Google Cloud Storage">
+        <div class="font-pixel text-base mb-3 text-center">Data Lake<br>Pantry</div>
+        <div class="text-8xl glow-effect">🗄️</div>
+        <div class="mt-3 text-xs layer-label">MinIO / HDFS</div>
+    </div>
+    <div class="layer-label absolute bottom-4 left-10 z-20">Layer 3: Storage (Data Lake)</div>
+
+    <!-- Processing Line (Spark / Databricks) -->
+    <div id="prep-spark"
+         class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 p-6 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl shadow-2xl w-80 h-72 flex flex-col items-center justify-center border-4 border-gray-600"
+         data-tooltip="⚙️ THE PROCESSING LAYER (ETL Engines)
+
+Apache Spark: Open-source data processing engine:
+• In-memory processing (100x faster than MapReduce)
+• Transforms raw data → processed data (ETL jobs)
+• Reads from MinIO, writes back to MinIO
+• Languages: Python (PySpark), Scala, SQL
+
+Alternative: Databricks (commercial platform with Delta Lake)
+
+☁️ Cloud Equivalent: Azure Synapse Spark, AWS EMR, Google Dataproc">
+        <div class="font-pixel text-base mb-3 text-center">Spark<br>Processing</div>
+        <div class="text-8xl glow-effect">🍳🔥</div>
+        <div class="mt-3 text-xs layer-label">Apache Spark / Databricks</div>
+    </div>
+    <div class="layer-label absolute bottom-4 left-1/2 -translate-x-1/2 z-20">Layer 4: Processing (ETL)</div>
+
+    <!-- Query Engines (Service Window) -->
+    <div id="service-area" class="absolute bottom-10 right-10 z-10 p-6 bg-gradient-to-br from-gray-900 to-black rounded-2xl shadow-2xl w-96 flex flex-col items-center justify-between border-4 border-gray-700">
+        <div class="font-pixel text-lg text-center mb-4">Query Engines<br><span class="text-xs font-normal">(SQL Analytics Layer)</span></div>
+
+        <!-- Gemini Button -->
+        <button id="btn-gemini" class="btn-base btn-gemini w-full py-4 px-4 rounded-xl text-white font-bold shadow-lg relative z-10"
+                data-tooltip="✨ AI ASSISTANT (Gemini)
+
+Ask AI to suggest new data analyses:
+• Creative data recipe suggestions
+• Based on available data sources
+• Powered by Gemini API">
+            <span class="relative z-10">✨ Ask AI for Ideas</span>
+        </button>
+
+        <!-- Trino -->
+        <button id="btn-trino" class="btn-base btn-trino w-full py-4 px-4 rounded-xl text-white font-bold shadow-lg mt-3 relative z-10"
+                data-tooltip="🔍 QUERY ENGINE: Trino
+
+Query federation engine (like BigQuery):
+• Queries data WHERE IT LIVES (no loading required)
+• Can query MinIO, PostgreSQL, MySQL simultaneously
+• Fast SQL for interactive analytics
+• Join data across multiple sources
+
+☁️ Cloud Equivalent: Google BigQuery, AWS Athena">
+            <span class="relative z-10">🏃 Run Trino Query</span>
+        </button>
+
+        <!-- ClickHouse -->
+        <button id="btn-clickhouse" class="btn-base btn-clickhouse w-full py-4 px-4 rounded-xl text-white font-bold shadow-lg mt-3 relative z-10"
+                data-tooltip="🔍 QUERY ENGINE: ClickHouse
+
+Ultra-fast columnar database:
+• Blazing speed (100x faster than traditional DBs)
+• Load data INTO ClickHouse for instant queries
+• Best for: Real-time dashboards, time-series data
+• Great compression (10x-100x)
+
+☁️ Cloud Equivalent: AWS Redshift, Snowflake">
+            <span class="relative z-10">🍝 Query ClickHouse</span>
+        </button>
+
+        <div id="customer-order" class="w-full min-h-[100px] bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl mt-4 flex items-center justify-center p-4 text-center border-2 border-gray-700">
+            <div id="order-text" class="text-sm leading-relaxed">👆 Click a button above to see the magic!</div>
+            <div id="order-spinner" class="spinner hidden"></div>
+        </div>
+    </div>
+    <div class="layer-label absolute bottom-4 right-10 z-20">Layer 5: Query Engines (SQL)</div>
+
+    <!-- JavaScript for Interactions -->
+    <script>
+        const chefK8s = document.getElementById('chef-k8s');
+        const pantry = document.getElementById('pantry-minio');
+        const prepLine = document.getElementById('prep-spark');
+        const server1 = document.getElementById('server-1');
+        const server2 = document.getElementById('server-2');
+        const btnTrino = document.getElementById('btn-trino');
+        const btnClickHouse = document.getElementById('btn-clickhouse');
+        const btnGemini = document.getElementById('btn-gemini');
+
+        const customerOrder = document.getElementById('customer-order');
+        const orderText = document.getElementById('order-text');
+        const orderSpinner = document.getElementById('order-spinner');
+
+        let isBusy = false;
+
+        // Create particles effect
+        function createParticles(element, count = 10) {
+            const rect = element.getBoundingClientRect();
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${rect.left + rect.width / 2 + (Math.random() - 0.5) * 40}px`;
+                particle.style.top = `${rect.top + rect.height / 2}px`;
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+
+        // --- 1. Head Chef (K8s) dispatches work ---
+        chefK8s.addEventListener('click', () => {
+            if (isBusy) return;
+            isBusy = true;
+            chefK8s.classList.add('working');
+            setOrderStatus('🛎️ K8s orchestrating workload...', false);
+            createParticles(chefK8s, 15);
+
+            // 1a. Assign Container to a Server Node
+            const targetStation = Math.random() > 0.5 ? server1 : server2;
+            const cookIcon = '🐳'; // Docker Container
+            const startRect = chefK8s.getBoundingClientRect();
+            const endRect = targetStation.getBoundingClientRect();
+
+            animateIcon(cookIcon, startRect, endRect, () => {
+                targetStation.classList.add('active');
+                createParticles(targetStation, 8);
+                setTimeout(() => targetStation.classList.remove('active'), 1200);
+            });
+
+            // 1b. Dispatch Spark Job
+            const sparkIcon = '⚡'; // Spark Job
+            const prepEndRect = prepLine.getBoundingClientRect();
+            animateIcon(sparkIcon, startRect, prepEndRect, () => {
+                runSparkJob();
+            });
+
+            setTimeout(() => {
+                chefK8s.classList.remove('working');
+                isBusy = false;
+            }, 3000);
+        });
+
+        // --- 2. Spark Processing Job ---
+        function runSparkJob() {
+            prepLine.classList.add('processing');
+            pantry.classList.add('accessed');
+
+            const rawIcon = '📄'; // Raw Data File
+            const startRect = pantry.getBoundingClientRect();
+            const endRect = prepLine.getBoundingClientRect();
+
+            animateIcon(rawIcon, startRect, endRect, () => {
+                createParticles(prepLine, 20);
+                setOrderStatus('🔥 Spark processing data...', false);
+
+                setTimeout(() => {
+                    prepLine.classList.remove('processing');
+                    pantry.classList.remove('accessed');
+
+                    const processedIcon = '📊'; // Processed Data
+                    const prepStartRect = prepLine.getBoundingClientRect();
+                    animateIcon(processedIcon, prepStartRect, startRect, () => {
+                        createParticles(pantry, 12);
+                        setOrderStatus('✅ Data processed and saved to Data Lake!', false);
+                    });
+                }, 2500);
+            });
+        }
+
+        // --- 3. Trino Query Execution ---
+        btnTrino.addEventListener('click', () => {
+            setOrderStatus('🏃 Trino querying multiple data sources...', false);
+            const queryIcon = '🔍';
+            const startRect = btnTrino.getBoundingClientRect();
+            const pantryRect = pantry.getBoundingClientRect();
+            const prepRect = prepLine.getBoundingClientRect();
+            const orderRect = customerOrder.getBoundingClientRect();
+
+            // Query goes to data lake
+            animateIcon(queryIcon, startRect, pantryRect, () => {
+                pantry.classList.add('accessed');
+                createParticles(pantry, 15);
+
+                // Then to processed data
+                animateIcon(queryIcon, pantryRect, prepRect, () => {
+                    pantry.classList.remove('accessed');
+                    createParticles(prepLine, 15);
+
+                    // Returns results
+                    const resultIcon = '📈';
+                    animateIcon(resultIcon, prepRect, orderRect, () => {
+                        setOrderStatus('📊 Query complete! Results:\n\n"SELECT COUNT(*) FROM users WHERE active = true"\n→ 42,857 active users', false);
+                    });
+                });
+            }, 800);
+        });
+
+        // --- 4. ClickHouse Instant Query ---
+        btnClickHouse.addEventListener('click', () => {
+            const loadingRect = customerOrder.getBoundingClientRect();
+            const lightningIcon = '⚡';
+
+            setOrderStatus('⚡ ClickHouse executing...', false);
+
+            // Create multiple lightning bolts for speed
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createParticles(btnClickHouse, 5);
+                }, i * 100);
+            }
+
+            setTimeout(() => {
+                setOrderStatus('🚀 Ultra-fast query complete!\n\n"SELECT avg(response_time) FROM logs WHERE timestamp > NOW() - 1h"\n→ 127ms average', false);
+            }, 300);
+        });
+
+        // --- 5. Gemini AI Call ---
+        btnGemini.addEventListener('click', () => {
+            setOrderStatus('🤖 AI Chef analyzing your data kitchen...', true);
+            createParticles(btnGemini, 20);
+            callGeminiApi();
+        });
+
+        function setOrderStatus(text, isLoading) {
+            if (isLoading) {
+                orderText.classList.add('hidden');
+                orderSpinner.classList.remove('hidden');
+            } else {
+                orderSpinner.classList.add('hidden');
+                orderText.classList.remove('hidden');
+            }
+            orderText.textContent = text;
+        }
+
+        async function callGeminiApi() {
+            const systemPrompt = "You are the Head Chef of the 'Data Stack Kitchen,' a data infrastructure platform. You have: MinIO data lake (raw logs, user data, transactions), Spark for processing, and Trino/ClickHouse for queries. Be creative and technical.";
+            const userQuery = "Suggest ONE creative 'data recipe' (analysis) with a fun name. Example: 'Spicy User-Churn Gumbo' - combines login logs + purchase data to predict churn. Keep it to 2-3 sentences max.";
+            const apiKey = ""; // Add your API key or leave empty
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: {
+                    temperature: 0.9,
+                    maxOutputTokens: 120,
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const recipe = result.candidates?.[0]?.content?.parts?.[0]?.text || "The chef is taking a break!";
+                setOrderStatus(`✨ Chef's Special:\n\n${recipe}`, false);
+
+            } catch (error) {
+                setOrderStatus(`🔴 Chef is unavailable!\n\nError: ${error.message}\n\n(Add your Gemini API key to line 409)`, false);
+            }
+        }
+
+        // Enhanced Icon Animation
+        function animateIcon(icon, startRect, endRect, onComplete, duration = 1800) {
+            const movingIcon = document.createElement('div');
+            movingIcon.textContent = icon;
+            movingIcon.className = 'moving-icon';
+            movingIcon.style.left = `${startRect.left + startRect.width / 2}px`;
+            movingIcon.style.top = `${startRect.top + startRect.height / 2}px`;
+            movingIcon.style.transition = `all ${duration / 1000}s cubic-bezier(0.68, -0.55, 0.265, 1.55)`;
+
+            document.body.appendChild(movingIcon);
+
+            requestAnimationFrame(() => {
+                movingIcon.style.left = `${endRect.left + endRect.width / 2}px`;
+                movingIcon.style.top = `${endRect.top + endRect.height / 2}px`;
+                movingIcon.style.transform = 'scale(1.5) rotate(720deg)';
+                movingIcon.style.opacity = '0.8';
+            });
+
+            setTimeout(() => {
+                movingIcon.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(movingIcon);
+                    if (onComplete) onComplete(movingIcon);
+                }, 300);
+            }, duration);
+        }
+
+        // Add ambient animations on load
+        window.addEventListener('load', () => {
+            setInterval(() => {
+                if (!isBusy && Math.random() > 0.7) {
+                    createParticles(chefK8s, 3);
+                }
+            }, 3000);
+        });
+
+    </script>
+</body>
+</html>

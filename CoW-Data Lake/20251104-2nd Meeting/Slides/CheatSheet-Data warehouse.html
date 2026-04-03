@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Infrastructure Stack - Interactive Cheat Sheet</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #564ba0 0%, #959ece 100%);
+            color: #403d39;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Main Tab Navigation */
+        .main-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .main-tab-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .main-tab-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .main-tab-btn.active {
+            background: white;
+            color: #564ba0;
+            border-color: white;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        /* Tab Panels */
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stack Tower Container */
+        .stack-tower {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 15px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Individual Layer */
+        .layer {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .layer:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+        }
+
+        .layer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--layer-color), var(--layer-color-light));
+        }
+
+        /* Layer Colors - Colormind Paper Dashboard */
+        .layer.app-layer { --layer-color: #959ece; --layer-color-light: #564ba0; }
+        .layer.query-layer { --layer-color: #e9ba4e; --layer-color-light: #df9a3e; }
+        .layer.processing-layer { --layer-color: #62aa76; --layer-color-light: #c5e0cc; }
+        .layer.storage-layer { --layer-color: #df9a3e; --layer-color-light: #f5dfc1; }
+        .layer.orchestration-layer { --layer-color: #f44336; --layer-color-light: #fccbc7; }
+        .layer.foundation-layer { --layer-color: #66615b; --layer-color-light: #aaa190; }
+
+        .layer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .layer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .layer-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--layer-color);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .layer-description {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* Technology Bubbles */
+        .tech-bubbles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tech-bubble {
+            background: linear-gradient(135deg, var(--layer-color), var(--layer-color-light));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .tech-bubble:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        .tech-bubble:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Cloud Alternatives Grid */
+        .cloud-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cloud-category {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .cloud-category h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cloud-category-description {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .cloud-providers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .cloud-provider {
+            background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .cloud-provider:hover {
+            border-color: #564ba0;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .provider-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .provider-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .provider-tech {
+            font-size: 1rem;
+            color: #564ba0;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .provider-description {
+            font-size: 0.9rem;
+            color: #66615b;
+            line-height: 1.6;
+        }
+
+        /* Material Icons */
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            vertical-align: middle;
+        }
+
+        .icon-large {
+            font-size: 48px;
+        }
+
+        .icon-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Tooltip/Modal for Definitions */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+            max-width: 450px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 3px solid var(--tooltip-color, #564ba0);
+        }
+
+        .tooltip.show {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .tooltip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .tooltip-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--tooltip-color, #564ba0);
+        }
+
+        .tooltip-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .tooltip-close:hover {
+            color: #333;
+        }
+
+        .tooltip-content {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .tooltip-content strong {
+            color: var(--tooltip-color, #564ba0);
+        }
+
+        .tooltip-content ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .tooltip-content li {
+            margin: 8px 0;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Legend */
+        .legend {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .legend h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .main-tabs {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .main-tab-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+
+            .cloud-providers {
+                grid-template-columns: 1fr;
+            }
+
+            .tooltip {
+                max-width: 90%;
+                left: 5% !important;
+                right: 5%;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .layer {
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .layer:nth-child(1) { animation-delay: 0.1s; }
+        .layer:nth-child(2) { animation-delay: 0.2s; }
+        .layer:nth-child(3) { animation-delay: 0.3s; }
+        .layer:nth-child(4) { animation-delay: 0.4s; }
+        .layer:nth-child(5) { animation-delay: 0.5s; }
+        .layer:nth-child(6) { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="icon-title" style="justify-content: center;"><span class="material-icons" style="font-size: 2.5rem;">account_tree</span> Data Infrastructure Stack</h1>
+        <p class="subtitle">Interactive Cheat Sheet: On-Premises vs Cloud Alternatives</p>
+
+        <!-- Main Tab Navigation -->
+        <div class="main-tabs">
+            <button class="main-tab-btn active" data-tab="onprem-tab"><span class="material-icons">dns</span> On-Premises Stack</button>
+            <button class="main-tab-btn" data-tab="cloud-tab"><span class="material-icons">cloud</span> Cloud Alternatives</button>
+        </div>
+
+        <!-- Tab 1: On-Premises Stack -->
+        <div id="onprem-tab" class="tab-panel active">
+            <div class="legend">
+                <h3 class="icon-title"><span class="material-icons" style="color: #564ba0;">menu_book</span> How to Use:</h3>
+                <div style="font-size: 0.9rem; line-height: 1.8;">
+                    <p class="icon-title"><span class="material-icons" style="color: #62aa76; font-size: 20px;">touch_app</span> <strong>Click on technology bubbles</strong> to see detailed definitions and explanations</p>
+                    <p class="icon-title"><span class="material-icons" style="color: #e9ba4e; font-size: 20px;">arrow_upward</span> <strong>Start from bottom to top</strong> to understand how the stack is built</p>
+                    <p class="icon-title"><span class="material-icons" style="color: #959ece; font-size: 20px;">cloud_queue</span> <strong>Switch to Cloud Alternatives tab</strong> to see AWS, Azure, and GCP equivalents</p>
+                </div>
+            </div>
+
+            <div class="stack-tower">
+                <!-- Layer 6: Application/BI Layer -->
+                <div class="layer app-layer" data-layer="app">
+                    <div class="layer-header">
+                        <div class="layer-title">
+                            <span class="layer-number">6</span>
+                            <span>Application & BI Layer</span>
+                        </div>
+                    </div>
+                    <div class="layer-description">
+                        Tools that connect to your data warehouse to visualize and analyze data
+                    </div>
+                    <div class="tech-bubbles">
+                        <div class="tech-bubble" data-tech="tableau">Tableau</div>
+                        <div class="tech-bubble" data-tech="powerbi">Power BI</div>
+                        <div class="tech-bubble" data-tech="looker">Looker</div>
+                        <div class="tech-bubble" data-tech="superset">Apache Superset</div>
+                        <div class="tech-bubble" data-tech="metabase">Metabase</div>
+                    </div>
+                </div>
+
+                <!-- Layer 5: Query Engine Layer -->
+                <div class="layer query-layer" data-layer="query">
+                    <div class="layer-header">
+                        <div class="layer-title">
+                            <span class="layer-number">5</span>
+                            <span>Query Engine Layer (SQL)</span>
+                        </div>
+                    </div>
+                    <div class="layer-description">
+                        The "SQL brain" that lets analysts run fast queries on your data lake
+                    </div>
+                    <div class="tech-bubbles">
+                        <div class="tech-bubble" data-tech="trino">Trino (PrestoSQL)</div>
+                        <div class="tech-bubble" data-tech="clickhouse">ClickHouse</div>
+                        <div class="tech-bubble" data-tech="impala">Apache Impala</div>
+                        <div class="tech-bubble" data-tech="greenplum">Greenplum</div>
+                        <div class="tech-bubble" data-tech="duckdb">DuckDB</div>
+                    </div>
+                </div>
+
+                <!-- Layer 4: Processing Layer -->
+                <div class="layer processing-layer" data-layer="processing">
+                    <div class="layer-header">
+                        <div class="layer-title">
+                            <span class="layer-number">4</span>
+                            <span>Processing Layer (ETL)</span>
+                        </div>
+                    </div>
+                    <div class="layer-description">
+                        Transforms raw data into clean, structured data (Extract, Transform, Load)
+                    </div>
+                    <div class="tech-bubbles">
+                        <div class="tech-bubble" data-tech="spark">Apache Spark</div>
+                        <div class="tech-bubble" data-tech="databricks">Databricks</div>
+                        <div class="tech-bubble" data-tech="flink">Apache Flink</div>
+                        <div class="tech-bubble" data-tech="airflow">Apache Airflow</div>
+                        <div class="tech-bubble" data-tech="dbt">dbt</div>
+                    </div>
+                </div>
+
+                <!-- Layer 3: Storage Layer -->
+                <div class="layer storage-layer" data-layer="storage">
+                    <div class="layer-header">
+                        <div class="layer-title">
+                            <span class="layer-number">3</span>
+                            <span>Storage Layer (Data Lake)</span>
+                        </div>
+                    </div>
+                    <div class="layer-description">
+                        Where all your raw data lives (files, logs, databases, structured/unstructured)
+                    </div>
+                    <div class="tech-bubbles">
+                        <div class="tech-bubble" data-tech="minio">MinIO</div>
+                        <div class="tech-bubble" data-tech="hdfs">Apache HDFS</div>
+                        <div class="tech-bubble" data-tech="ceph">Ceph</div>
+                        <div class="tech-bubble" data-tech="delta">Delta Lake</div>
+                        <div class="tech-bubble" data-tech="iceberg">Apache Iceberg</div>
+                        <div class="tech-bubble" data-tech="hudi">Apache Hudi</div>
+                    </div>
+                </div>
+
+                <!-- Layer 2: Orchestration Layer -->
+                <div class="layer orchestration-layer" data-layer="orchestration">
+                    <div class="layer-header">
+                        <div class="layer-title">
+                            <span class="layer-number">2</span>
+                            <span>Orchestration Layer (Data Center OS)</span>
+                        </div>
+                    </div>
+                    <div class="layer-description">
+                        Manages containers across servers - the "operating system" for your private cloud
+                    </div>
+                    <div class="tech-bubbles">
+                        <div class="tech-bubble" data-tech="kubernetes">Kubernetes</div>
+                        <div class="tech-bubble" data-tech="docker">Docker</div>
+                        <div class="tech-bubble" data-tech="rancher">Rancher</div>
+                        <div class="tech-bubble" data-tech="openshift">OpenShift</div>
+                        <div class="tech-bubble" data-tech="helm">Helm</div>
+                    </div>
+                </div>
+
+                <!-- Layer 1: Foundation -->
+                <div class="layer foundation-layer" data-layer="foundation">
+                    <div class="layer-header">
+                        <div class="layer-title">
+                            <span class="layer-number">1</span>
+                            <span>Foundation Layer (Hardware & OS)</span>
+                        </div>
+                    </div>
+                    <div class="layer-description">
+                        Physical servers (bare metal) running Linux - the base of everything
+                    </div>
+                    <div class="tech-bubbles">
+                        <div class="tech-bubble" data-tech="linux">Linux (Ubuntu/RHEL)</div>
+                        <div class="tech-bubble" data-tech="servers">Physical Servers</div>
+                        <div class="tech-bubble" data-tech="networking">Networking (10Gbps+)</div>
+                        <div class="tech-bubble" data-tech="storage-hw">Storage (SSD/HDD)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Cloud Alternatives -->
+        <div id="cloud-tab" class="tab-panel">
+            <div class="legend">
+                <h3 class="icon-title"><span class="material-icons" style="color: #959ece;">cloud</span> Cloud Service Providers:</h3>
+                <div style="font-size: 0.9rem; line-height: 1.8;">
+                    <p class="icon-title"><span class="material-icons" style="color: #62aa76; font-size: 20px;">compare_arrows</span> <strong>Compare cloud equivalents</strong> for each layer of the on-premises stack</p>
+                    <p class="icon-title"><span class="material-icons" style="color: #e9ba4e; font-size: 20px;">category</span> <strong>AWS, Azure, and Google Cloud Platform</strong> alternatives organized by category</p>
+                </div>
+            </div>
+
+            <div class="cloud-grid">
+                <!-- Application & BI Layer -->
+                <div class="cloud-category">
+                    <h2 class="icon-title"><span class="material-icons" style="color: #959ece;">dashboard</span> Application & BI Layer</h2>
+                    <p class="cloud-category-description">Cloud-based business intelligence and analytics platforms</p>
+                    <div class="cloud-providers">
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #959ece;">bar_chart</span></div>
+                            <div class="provider-name">AWS QuickSight</div>
+                            <div class="provider-tech">Business Intelligence Service</div>
+                            <div class="provider-description">Serverless BI service, pay-per-session pricing. Integrates seamlessly with Redshift, Athena, RDS, and other AWS data sources. ML-powered insights and natural language queries.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #62aa76;">trending_up</span></div>
+                            <div class="provider-name">Power BI Service</div>
+                            <div class="provider-tech">Cloud BI Platform (Microsoft)</div>
+                            <div class="provider-description">Microsoft's cloud BI platform with deep integration with Azure Synapse, Office 365, and Teams. Real-time dashboards, AI-powered analytics, and enterprise governance.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #564ba0;">analytics</span></div>
+                            <div class="provider-name">Looker (Google Cloud)</div>
+                            <div class="provider-tech">Modern BI Platform</div>
+                            <div class="provider-description">Now part of Google Cloud, native integration with BigQuery. Data modeling in LookML, embedded analytics capabilities, and version-controlled data definitions.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Query Engine Layer -->
+                <div class="cloud-category">
+                    <h2 class="icon-title"><span class="material-icons" style="color: #e9ba4e;">search</span> Query Engine Layer (Data Warehouses)</h2>
+                    <p class="cloud-category-description">Cloud data warehouses for fast SQL analytics</p>
+                    <div class="cloud-providers">
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #e9ba4e;">account_balance</span></div>
+                            <div class="provider-name">Google BigQuery</div>
+                            <div class="provider-tech">Serverless Data Warehouse</div>
+                            <div class="provider-description">Fully serverless, pay-per-query model. Separation of storage (Colossus) and compute (Dremel). Auto-scales to petabytes, built-in ML capabilities, and geospatial analysis.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #62aa76;">waves</span></div>
+                            <div class="provider-name">AWS Redshift</div>
+                            <div class="provider-tech">Managed MPP Cluster</div>
+                            <div class="provider-description">Traditional cluster model (leader + compute nodes). You manage cluster size but get fine-grained control over cost and performance. Redshift Spectrum queries S3 data directly.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #959ece;">extension</span></div>
+                            <div class="provider-name">Azure Synapse Analytics</div>
+                            <div class="provider-tech">Unified Analytics Platform</div>
+                            <div class="provider-description">All-in-one: SQL warehouse + Spark pools + data pipelines in one workspace. Best for Microsoft ecosystem. Dedicated SQL pools (provisioned) or serverless SQL pools (on-demand).</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #564ba0;">ac_unit</span></div>
+                            <div class="provider-name">Snowflake</div>
+                            <div class="provider-tech">Multi-Cloud Data Warehouse</div>
+                            <div class="provider-description">Runs on AWS, Azure, or GCP. Separation of storage and compute with instant scaling. Pay-per-second billing, zero-copy cloning, time travel, and data sharing across organizations.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #df9a3e;">pageview</span></div>
+                            <div class="provider-name">AWS Athena</div>
+                            <div class="provider-tech">Serverless Query Service</div>
+                            <div class="provider-description">Query S3 data directly using SQL (based on Presto). Pay only for queries run. No infrastructure to manage. Great for ad-hoc analysis and data lake queries.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing Layer -->
+                <div class="cloud-category">
+                    <h2 class="icon-title"><span class="material-icons" style="color: #62aa76;">bolt</span> Processing Layer (ETL & Data Processing)</h2>
+                    <p class="cloud-category-description">Cloud services for data transformation and processing</p>
+                    <div class="cloud-providers">
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #e9ba4e;">flash_on</span></div>
+                            <div class="provider-name">AWS EMR</div>
+                            <div class="provider-tech">Elastic MapReduce</div>
+                            <div class="provider-description">Managed Hadoop/Spark clusters on EC2. Pay for compute by the hour. Auto-scaling, spot instances for cost savings. Great for batch processing and large-scale ETL jobs.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #f44336;">whatshot</span></div>
+                            <div class="provider-name">Azure Synapse Spark Pools</div>
+                            <div class="provider-tech">Managed Apache Spark</div>
+                            <div class="provider-description">Apache Spark within Synapse workspace. Jupyter notebooks, auto-pause/resume, tight integration with Synapse SQL and Pipelines. Pay only when running.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #62aa76;">public</span></div>
+                            <div class="provider-name">Google Cloud Dataproc</div>
+                            <div class="provider-tech">Managed Spark/Hadoop</div>
+                            <div class="provider-description">Fast cluster provisioning (90 seconds), integrates with BigQuery and GCS. Pay-per-second billing. Auto-scaling and auto-deletion of idle clusters.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #959ece;">science</span></div>
+                            <div class="provider-name">AWS Glue</div>
+                            <div class="provider-tech">Serverless ETL</div>
+                            <div class="provider-description">Fully serverless Spark-based ETL. Auto-discovers schema with crawlers, generates PySpark code. Data Catalog for metadata. Pay only for job runtime.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #564ba0;">sync</span></div>
+                            <div class="provider-name">Azure Data Factory</div>
+                            <div class="provider-tech">Data Integration Service</div>
+                            <div class="provider-description">Visual ETL/ELT pipelines, 90+ connectors, schedule and orchestrate workflows. Integrates with Synapse, Databricks, and Azure ML.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #62aa76;">waves</span></div>
+                            <div class="provider-name">Google Cloud Dataflow</div>
+                            <div class="provider-tech">Serverless Stream/Batch</div>
+                            <div class="provider-description">Unified stream and batch processing based on Apache Beam. Fully managed, auto-scaling. Great for real-time data pipelines and streaming analytics.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storage Layer -->
+                <div class="cloud-category">
+                    <h2 class="icon-title"><span class="material-icons" style="color: #df9a3e;">storage</span> Storage Layer (Object Storage & Data Lakes)</h2>
+                    <p class="cloud-category-description">Cloud object storage for data lakes</p>
+                    <div class="cloud-providers">
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #df9a3e;">inventory_2</span></div>
+                            <div class="provider-name">AWS S3</div>
+                            <div class="provider-tech">Simple Storage Service</div>
+                            <div class="provider-description">The gold standard for object storage. Unlimited capacity, 11 9's durability (99.999999999%). Storage classes (Standard, IA, Glacier), lifecycle policies, versioning, and replication.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #62aa76;">water_drop</span></div>
+                            <div class="provider-name">Azure Data Lake Storage Gen2</div>
+                            <div class="provider-tech">Hierarchical Storage</div>
+                            <div class="provider-description">Built on Blob Storage with hierarchical namespaces for file system operations. Native integration with Synapse, Databricks, HDInsight. POSIX ACLs for fine-grained security.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #959ece;">cloud</span></div>
+                            <div class="provider-name">Google Cloud Storage</div>
+                            <div class="provider-tech">Unified Object Storage</div>
+                            <div class="provider-description">Multi-regional, strongly consistent object storage. Storage classes (Standard, Nearline, Coldline, Archive). Seamless integration with BigQuery for querying files directly.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orchestration Layer -->
+                <div class="cloud-category">
+                    <h2 class="icon-title"><span class="material-icons" style="color: #f44336;">settings_applications</span> Orchestration Layer (Container Services)</h2>
+                    <p class="cloud-category-description">Managed Kubernetes and container orchestration</p>
+                    <div class="cloud-providers">
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #564ba0;">settings_ethernet</span></div>
+                            <div class="provider-name">AWS EKS</div>
+                            <div class="provider-tech">Elastic Kubernetes Service</div>
+                            <div class="provider-description">Managed Kubernetes control plane. Auto-upgrades, auto-scaling with Karpenter or Cluster Autoscaler. Integrates with IAM, VPC, CloudWatch, and AWS services.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #62aa76;">hexagon</span></div>
+                            <div class="provider-name">Azure AKS</div>
+                            <div class="provider-tech">Azure Kubernetes Service</div>
+                            <div class="provider-description">Free control plane (pay only for nodes). Integrated monitoring with Azure Monitor, autoscaling, Virtual Nodes for serverless bursting. Azure AD integration.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #e9ba4e;">my_location</span></div>
+                            <div class="provider-name">Google GKE</div>
+                            <div class="provider-tech">Google Kubernetes Engine</div>
+                            <div class="provider-description">Most mature managed K8s (Google invented Kubernetes). Autopilot mode for zero-ops clusters. Binary Authorization, Workload Identity, and built-in security scanning.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #959ece;">sailing</span></div>
+                            <div class="provider-name">AWS ECS/Fargate</div>
+                            <div class="provider-tech">Container Orchestration</div>
+                            <div class="provider-description">AWS-native alternative to Kubernetes. ECS = managed container orchestration. Fargate = serverless containers (no EC2 instances to manage). Simpler than K8s.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Foundation Layer -->
+                <div class="cloud-category">
+                    <h2 class="icon-title"><span class="material-icons" style="color: #66615b;">computer</span> Foundation Layer (Compute Infrastructure)</h2>
+                    <p class="cloud-category-description">Cloud virtual machines and compute services</p>
+                    <div class="cloud-providers">
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #66615b;">laptop</span></div>
+                            <div class="provider-name">AWS EC2</div>
+                            <div class="provider-tech">Elastic Compute Cloud</div>
+                            <div class="provider-description">Virtual servers on demand. 500+ instance types (general purpose, compute-optimized, memory-optimized, GPU, ARM). Spot instances for 90% discounts. Pay-per-second billing.</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #403d39;">desktop_windows</span></div>
+                            <div class="provider-name">Azure Virtual Machines</div>
+                            <div class="provider-tech">Windows & Linux VMs</div>
+                            <div class="provider-description">Flexible VM sizes from B-series (burstable) to H-series (HPC). Spot instances, reserved instances (1-3 year commitments). Best Windows VM support (same company as Windows).</div>
+                        </div>
+                        <div class="cloud-provider">
+                            <div class="provider-icon"><span class="material-icons icon-large" style="color: #aaa190;">build</span></div>
+                            <div class="provider-name">Google Compute Engine</div>
+                            <div class="provider-tech">VM Instances</div>
+                            <div class="provider-description">Custom machine types (configure exact vCPU and RAM). Sustained use discounts (automatic). Live migration for maintenance (no downtime). Preemptible VMs for batch jobs.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip Modal -->
+    <div class="overlay" id="overlay"></div>
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-header">
+            <h3 class="tooltip-title" id="tooltip-title"></h3>
+            <button class="tooltip-close" id="tooltip-close">×</button>
+        </div>
+        <div class="tooltip-content" id="tooltip-content"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/bichn/tech-definitions@main/definitions.js"></script>
+    <script>
+        // Fallback if CDN fails - inline definitions
+        if (typeof techDefinitions === 'undefined') {
+            var techDefinitions = {
+                // Application Layer
+                'tableau': {
+                    title: 'Tableau',
+                    content: `<strong>What it is:</strong> Enterprise business intelligence platform for data visualization and analytics.
+                    <ul>
+                        <li>Drag-and-drop interface for creating dashboards</li>
+                        <li>Connects to 100+ data sources</li>
+                        <li>Real-time collaboration and sharing</li>
+                        <li>On-premises (Tableau Server) or cloud (Tableau Online)</li>
+                    </ul>
+                    <strong>Best for:</strong> Enterprise organizations with complex visualization needs`
+                },
+                'powerbi': {
+                    title: 'Power BI',
+                    content: `<strong>What it is:</strong> Microsoft's business analytics service.
+                    <ul>
+                        <li>Deep integration with Microsoft ecosystem (Excel, Azure, Office 365)</li>
+                        <li>DAX language for custom calculations</li>
+                        <li>Power Query for data transformation</li>
+                        <li>Very cost-effective for Microsoft shops</li>
+                    </ul>
+                    <strong>Best for:</strong> Organizations already using Microsoft products`
+                },
+                'looker': {
+                    title: 'Looker',
+                    content: `<strong>What it is:</strong> Modern BI platform (now owned by Google Cloud).
+                    <ul>
+                        <li>LookML: Code-based data modeling language</li>
+                        <li>Single source of truth for metrics</li>
+                        <li>Embedded analytics capabilities</li>
+                        <li>Native BigQuery integration</li>
+                    </ul>
+                    <strong>Best for:</strong> Data teams that want version-controlled, reusable data models`
+                },
+                'superset': {
+                    title: 'Apache Superset',
+                    content: `<strong>What it is:</strong> Open-source data exploration and visualization platform.
+                    <ul>
+                        <li>Created by Airbnb, now Apache project</li>
+                        <li>Free and self-hosted</li>
+                        <li>Rich visualizations and SQL IDE</li>
+                        <li>Supports 30+ databases out of the box</li>
+                    </ul>
+                    <strong>Best for:</strong> Teams wanting open-source BI without licensing costs`
+                },
+                'metabase': {
+                    title: 'Metabase',
+                    content: `<strong>What it is:</strong> Simple, open-source BI tool for non-technical users.
+                    <ul>
+                        <li>No SQL required (visual query builder)</li>
+                        <li>Easy setup (5 minutes to get started)</li>
+                        <li>Embeddable dashboards</li>
+                        <li>Great for startups and small teams</li>
+                    </ul>
+                    <strong>Best for:</strong> Small teams wanting simple, fast BI solution`
+                },
+
+                // Query Layer
+                'trino': {
+                    title: 'Trino (formerly PrestoSQL)',
+                    content: `<strong>What it is:</strong> Distributed SQL query engine for big data.
+                    <ul>
+                        <li><strong>Query Federation:</strong> Query data WHERE IT LIVES (no loading required)</li>
+                        <li>Can join data from PostgreSQL, MySQL, MinIO, Kafka in ONE query</li>
+                        <li>Similar architecture to Google BigQuery's Dremel</li>
+                        <li>Fast interactive queries (seconds to minutes)</li>
+                        <li>MPP (Massively Parallel Processing)</li>
+                    </ul>
+                    <strong>Use case:</strong> "Give me total sales from MySQL joined with user events from S3"`
+                },
+                'clickhouse': {
+                    title: 'ClickHouse',
+                    content: `<strong>What it is:</strong> Ultra-fast columnar database for real-time analytics.
+                    <ul>
+                        <li><strong>Speed:</strong> 100x faster than traditional databases</li>
+                        <li><strong>Compression:</strong> 10x-100x data compression</li>
+                        <li>Real-time ingestion (millions of rows/second)</li>
+                        <li>Perfect for time-series data (logs, events, IoT)</li>
+                        <li>You LOAD data INTO ClickHouse (not query federation)</li>
+                    </ul>
+                    <strong>Best for:</strong> Real-time dashboards, analytics on massive datasets`
+                },
+                'impala': {
+                    title: 'Apache Impala',
+                    content: `<strong>What it is:</strong> SQL query engine for Apache Hadoop.
+                    <ul>
+                        <li>Created by Cloudera for low-latency SQL on HDFS</li>
+                        <li>MPP architecture (like a mini-Redshift for Hadoop)</li>
+                        <li>Queries data in HDFS without MapReduce overhead</li>
+                        <li>Great integration with Hive metastore</li>
+                    </ul>
+                    <strong>Best for:</strong> Existing Hadoop environments`
+                },
+                'greenplum': {
+                    title: 'Greenplum Database',
+                    content: `<strong>What it is:</strong> Open-source MPP database (PostgreSQL-based).
+                    <ul>
+                        <li>Based on PostgreSQL (ACID compliant)</li>
+                        <li>Massively parallel processing across nodes</li>
+                        <li>Full SQL support + extensions (ML, geospatial)</li>
+                        <li>Good for mixed workloads (OLTP + OLAP)</li>
+                    </ul>
+                    <strong>Best for:</strong> PostgreSQL users wanting data warehouse scale`
+                },
+                'duckdb': {
+                    title: 'DuckDB',
+                    content: `<strong>What it is:</strong> In-process SQL database for analytics.
+                    <ul>
+                        <li>Like SQLite but for analytics (columnar storage)</li>
+                        <li>Embeds INTO your application (no server needed)</li>
+                        <li>Blazing fast on single machine (multi-threaded)</li>
+                        <li>Can query Parquet files directly</li>
+                    </ul>
+                    <strong>Best for:</strong> Local analytics, data science notebooks, edge computing`
+                },
+
+                // Processing Layer
+                'spark': {
+                    title: 'Apache Spark',
+                    content: `<strong>What it is:</strong> Distributed data processing engine.
+                    <ul>
+                        <li><strong>In-memory processing:</strong> 100x faster than MapReduce</li>
+                        <li>Batch processing, stream processing, ML, graph analytics</li>
+                        <li>Languages: Python (PySpark), Scala, Java, R, SQL</li>
+                        <li>Reads/writes from MinIO, HDFS, S3, databases</li>
+                        <li>Industry standard for big data ETL</li>
+                    </ul>
+                    <strong>Example:</strong> Transform 10TB of raw logs into clean Parquet files`
+                },
+                'databricks': {
+                    title: 'Databricks',
+                    content: `<strong>What it is:</strong> Commercial platform built on Apache Spark.
+                    <ul>
+                        <li>Created by Spark's original creators</li>
+                        <li><strong>Delta Lake:</strong> ACID transactions for data lakes</li>
+                        <li>Collaborative notebooks (Jupyter-like)</li>
+                        <li>Optimized Spark runtime (faster than open-source)</li>
+                        <li>Unity Catalog for data governance</li>
+                        <li>Can run on-premises or cloud (AWS/Azure/GCP)</li>
+                    </ul>
+                    <strong>Trade-off:</strong> Expensive but makes Spark much easier`
+                },
+                'flink': {
+                    title: 'Apache Flink',
+                    content: `<strong>What it is:</strong> Stream processing framework.
+                    <ul>
+                        <li>True real-time streaming (not micro-batches)</li>
+                        <li>Event time processing with watermarks</li>
+                        <li>Exactly-once state guarantees</li>
+                        <li>Lower latency than Spark Streaming</li>
+                    </ul>
+                    <strong>Best for:</strong> Real-time analytics, fraud detection, recommendation engines`
+                },
+                'airflow': {
+                    title: 'Apache Airflow',
+                    content: `<strong>What it is:</strong> Workflow orchestration platform.
+                    <ul>
+                        <li>Schedule and monitor data pipelines</li>
+                        <li>DAGs (Directed Acyclic Graphs) defined in Python</li>
+                        <li>Rich UI for monitoring jobs</li>
+                        <li>Created by Airbnb, now Apache project</li>
+                        <li>Integrates with Spark, databases, cloud services</li>
+                    </ul>
+                    <strong>Use case:</strong> "Run Spark job at 2am daily, then send email if it fails"`
+                },
+                'dbt': {
+                    title: 'dbt (data build tool)',
+                    content: `<strong>What it is:</strong> Transform data IN your warehouse using SQL.
+                    <ul>
+                        <li>T in ELT (Extract, Load, Transform)</li>
+                        <li>SQL-based transformations with Jinja templating</li>
+                        <li>Version control for data transformations (Git)</li>
+                        <li>Automated testing and documentation</li>
+                        <li>Works with BigQuery, Redshift, Snowflake, etc.</li>
+                    </ul>
+                    <strong>Philosophy:</strong> Transform data where it lives (in the warehouse)`
+                },
+
+                // Storage Layer
+                'minio': {
+                    title: 'MinIO',
+                    content: `<strong>What it is:</strong> High-performance S3-compatible object storage.
+                    <ul>
+                        <li><strong>S3 API compatible:</strong> Drop-in replacement for AWS S3</li>
+                        <li>Modern architecture (designed for containers/K8s)</li>
+                        <li>Lightweight and easy to deploy</li>
+                        <li>Erasure coding for data protection</li>
+                        <li>Multi-tenancy, versioning, lifecycle policies</li>
+                    </ul>
+                    <strong>Why choose MinIO:</strong> Modern on-prem data lake without S3 lock-in`
+                },
+                'hdfs': {
+                    title: 'Apache HDFS',
+                    content: `<strong>What it is:</strong> Hadoop Distributed File System.
+                    <ul>
+                        <li>Original big data file system (created 2006)</li>
+                        <li>Splits files into 128MB blocks, replicates 3x</li>
+                        <li>NameNode (metadata) + DataNodes (actual data)</li>
+                        <li>Battle-tested at petabyte scale</li>
+                        <li><strong>Downside:</strong> Complex, older architecture, not S3-compatible</li>
+                    </ul>
+                    <strong>Use when:</strong> Existing Hadoop ecosystem or extreme scale needs`
+                },
+                'ceph': {
+                    title: 'Ceph',
+                    content: `<strong>What it is:</strong> Unified storage platform (object, block, file).
+                    <ul>
+                        <li>Software-defined storage</li>
+                        <li>No single point of failure (fully distributed)</li>
+                        <li>S3-compatible object storage (RadosGW)</li>
+                        <li>Self-healing and self-managing</li>
+                    </ul>
+                    <strong>Best for:</strong> Large-scale storage infrastructure`
+                },
+                'delta': {
+                    title: 'Delta Lake',
+                    content: `<strong>What it is:</strong> Open table format with ACID transactions.
+                    <ul>
+                        <li>Adds database features to data lakes</li>
+                        <li><strong>ACID transactions:</strong> No corrupt data from failed jobs</li>
+                        <li><strong>Time travel:</strong> Query historical versions</li>
+                        <li><strong>Schema evolution:</strong> Add columns safely</li>
+                        <li>Created by Databricks, works on Spark</li>
+                    </ul>
+                    <strong>Solves:</strong> "Small files problem" and data quality issues in lakes`
+                },
+                'iceberg': {
+                    title: 'Apache Iceberg',
+                    content: `<strong>What it is:</strong> Open table format for huge analytic datasets.
+                    <ul>
+                        <li>Created by Netflix for petabyte-scale tables</li>
+                        <li>Engine-agnostic (Spark, Trino, Flink all support it)</li>
+                        <li>Hidden partitioning (users don't need to know partitions)</li>
+                        <li>Time travel and schema evolution</li>
+                    </ul>
+                    <strong>vs Delta Lake:</strong> More neutral (not tied to Databricks)`
+                },
+                'hudi': {
+                    title: 'Apache Hudi',
+                    content: `<strong>What it is:</strong> Streaming data lake platform.
+                    <ul>
+                        <li>Created by Uber for incremental data processing</li>
+                        <li>Upserts and deletes in data lakes</li>
+                        <li>Incremental queries (only changed data)</li>
+                        <li>Record-level updates (not just file replacements)</li>
+                    </ul>
+                    <strong>Best for:</strong> Streaming data with frequent updates`
+                },
+
+                // Orchestration Layer
+                'kubernetes': {
+                    title: 'Kubernetes (K8s)',
+                    content: `<strong>What it is:</strong> Container orchestration platform.
+                    <ul>
+                        <li>The "operating system" for your data center</li>
+                        <li><strong>Auto-scaling:</strong> Add/remove containers based on load</li>
+                        <li><strong>Self-healing:</strong> Restarts failed containers automatically</li>
+                        <li><strong>Load balancing:</strong> Distributes traffic</li>
+                        <li>Schedules Spark jobs, Trino queries, MinIO storage</li>
+                    </ul>
+                    <strong>Why it matters:</strong> You don't install software on servers anymore - K8s manages containers`
+                },
+                'docker': {
+                    title: 'Docker',
+                    content: `<strong>What it is:</strong> Container platform (packages apps with dependencies).
+                    <ul>
+                        <li>Package app + libraries + OS into one "container"</li>
+                        <li>Runs the same everywhere (dev laptop → production)</li>
+                        <li>Lightweight (shares OS kernel, unlike VMs)</li>
+                        <li>DockerHub: Public registry of pre-built images</li>
+                    </ul>
+                    <strong>Kubernetes uses Docker:</strong> K8s orchestrates Docker containers across many servers`
+                },
+                'rancher': {
+                    title: 'Rancher',
+                    content: `<strong>What it is:</strong> Kubernetes management platform.
+                    <ul>
+                        <li>Makes K8s easier with Web UI</li>
+                        <li>Manage multiple K8s clusters from one place</li>
+                        <li>Built-in monitoring and logging</li>
+                        <li>Role-based access control (RBAC)</li>
+                    </ul>
+                    <strong>Best for:</strong> Teams new to Kubernetes`
+                },
+                'openshift': {
+                    title: 'Red Hat OpenShift',
+                    content: `<strong>What it is:</strong> Enterprise Kubernetes distribution.
+                    <ul>
+                        <li>Kubernetes + developer tools + security hardening</li>
+                        <li>Built-in CI/CD pipelines</li>
+                        <li>Commercial support from Red Hat</li>
+                        <li>Opinionated (less flexibility but easier)</li>
+                    </ul>
+                    <strong>Best for:</strong> Enterprises wanting supported K8s`
+                },
+                'helm': {
+                    title: 'Helm',
+                    content: `<strong>What it is:</strong> Package manager for Kubernetes.
+                    <ul>
+                        <li>"apt-get" or "npm" for Kubernetes</li>
+                        <li>Deploy complex apps with one command</li>
+                        <li>Charts: Pre-configured K8s templates</li>
+                        <li>Version control and rollbacks</li>
+                    </ul>
+                    <strong>Example:</strong> helm install spark → installs entire Spark cluster`
+                },
+
+                // Foundation Layer
+                'linux': {
+                    title: 'Linux (Ubuntu/RHEL)',
+                    content: `<strong>What it is:</strong> Operating system for servers.
+                    <ul>
+                        <li><strong>Ubuntu Server:</strong> Popular, easy, free, strong community</li>
+                        <li><strong>RHEL (Red Hat):</strong> Enterprise-grade, commercial support, stable</li>
+                        <li><strong>CentOS/Rocky:</strong> Free RHEL alternatives</li>
+                        <li>Foundation for everything else in the stack</li>
+                    </ul>
+                    <strong>Cloud equivalent:</strong> AWS EC2, Azure VMs, GCP Compute Engine run Linux`
+                },
+                'servers': {
+                    title: 'Physical Servers',
+                    content: `<strong>What you need:</strong> Bare metal servers in racks.
+                    <ul>
+                        <li><strong>CPUs:</strong> Intel Xeon or AMD EPYC (20-64+ cores)</li>
+                        <li><strong>RAM:</strong> 256GB - 1TB+ per server</li>
+                        <li><strong>Storage:</strong> NVMe SSDs (hot data) + HDDs (cold data)</li>
+                        <li><strong>Networking:</strong> 10Gbps - 100Gbps NICs</li>
+                        <li>Requires: Power, cooling, racks, physical security</li>
+                    </ul>
+                    <strong>Cost:</strong> $10K-$50K per server + data center space`
+                },
+                'networking': {
+                    title: 'Networking (10Gbps+)',
+                    content: `<strong>What you need:</strong> High-speed network infrastructure.
+                    <ul>
+                        <li><strong>Core Switches:</strong> 40-100Gbps backbone</li>
+                        <li><strong>ToR Switches:</strong> Top of Rack switches (10-40Gbps)</li>
+                        <li><strong>Redundancy:</strong> Multiple paths for failover</li>
+                        <li><strong>Firewalls:</strong> Network security</li>
+                        <li>Fast data transfer is critical for distributed systems</li>
+                    </ul>
+                    <strong>Why 10Gbps+:</strong> Moving terabytes between nodes requires speed`
+                },
+                'storage-hw': {
+                    title: 'Storage Hardware',
+                    content: `<strong>What you need:</strong> Fast and reliable storage.
+                    <ul>
+                        <li><strong>NVMe SSDs:</strong> Ultra-fast (hot data, frequently accessed)</li>
+                        <li><strong>SATA SSDs:</strong> Mid-tier performance and cost</li>
+                        <li><strong>HDDs:</strong> Cheap bulk storage (cold data, archives)</li>
+                        <li><strong>RAID:</strong> Redundancy and performance</li>
+                        <li>Typical: 2-10TB SSD + 10-100TB HDD per server</li>
+                    </ul>
+                    <strong>Trade-off:</strong> Speed vs cost vs capacity`
+                }
+            };
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainTabBtns = document.querySelectorAll('.main-tab-btn');
+            const tabPanels = document.querySelectorAll('.tab-panel');
+            const techBubbles = document.querySelectorAll('.tech-bubble');
+            const tooltip = document.getElementById('tooltip');
+            const overlay = document.getElementById('overlay');
+            const tooltipClose = document.getElementById('tooltip-close');
+
+            // Main tab switching
+            mainTabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetTab = btn.dataset.tab;
+
+                    // Remove active from all buttons and panels
+                    mainTabBtns.forEach(b => b.classList.remove('active'));
+                    tabPanels.forEach(p => p.classList.remove('active'));
+
+                    // Add active to clicked button and target panel
+                    btn.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+
+            // Tech bubble tooltips
+            techBubbles.forEach(bubble => {
+                bubble.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const tech = bubble.dataset.tech;
+                    const definition = techDefinitions[tech];
+
+                    if (definition) {
+                        showTooltip(definition, e);
+                    }
+                });
+            });
+
+            // Close tooltip
+            tooltipClose.addEventListener('click', hideTooltip);
+            overlay.addEventListener('click', hideTooltip);
+
+            function showTooltip(definition, event) {
+                const tooltipTitle = document.getElementById('tooltip-title');
+                const tooltipContent = document.getElementById('tooltip-content');
+
+                tooltipTitle.textContent = definition.title;
+                tooltipContent.innerHTML = definition.content;
+
+                // Get layer color
+                const layer = event.target.closest('.layer');
+                const layerColor = window.getComputedStyle(layer).getPropertyValue('--layer-color');
+                tooltip.style.setProperty('--tooltip-color', layerColor);
+
+            // --- FIXED & IMPROVED POSITIONING LOGIC ---
+
+                // 1. Show overlay and tooltip, but keep tooltip invisible for measurement
+                overlay.classList.add('show');
+                tooltip.classList.add('show'); 
+                tooltip.style.visibility = 'hidden'; // <-- Keep it hidden for now
+
+                // 2. Get dimensions
+                const rect = event.target.getBoundingClientRect();
+                const tooltipRect = tooltip.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+                const viewportWidth = window.innerWidth;
+            // const scrollY = window.scrollY; // <-- REMOVED (THIS WAS THE BUG)
+
+                let top, left;
+
+                const spaceAbove = rect.top;
+                const spaceBelow = viewportHeight - rect.bottom;
+                const tooltipHeight = tooltipRect.height;
+                const tooltipWidth = tooltipRect.width;
+            const padding = 20; // Viewport padding
+
+            // 3. Decide vertical position (FIX: No scrollY)
+            // Show above if there's more space above, OR if there's not enough space below
+                if (spaceAbove > spaceBelow && spaceBelow < tooltipHeight + padding) {
+                    // Show above
+                    top = rect.top - tooltipHeight - 15;
+                } else {
+                    // Show below
+                    top = rect.bottom + 15;
+                }
+
+             // 4. Decide horizontal position
+                left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+
+            // 5. Adjust for viewport bounds (Robust Check)
+            
+            // Adjust horizontal
+                if (left < padding) {
+                    left = padding;
+                } else if (left + tooltipWidth > viewportWidth - padding) {
+                    left = viewportWidth - tooltipWidth - padding;
+                }
+
+            // Adjust vertical
+                if (top < padding) { // Check if it goes off top
+                    top = padding;
+                } else if (top + tooltipHeight > viewportHeight - padding) { // Check if it goes off bottom
+                    top = viewportHeight - tooltipHeight - padding;
+                    // Re-check top boundary in case tooltip is taller than viewport
+                    if (top < padding) {
+                        top = padding;
+                    }
+                }
+                // 6. Apply final position
+                tooltip.style.top = `${top}px`;
+                tooltip.style.left = `${left}px`;
+                
+            // 7. Now make it visible (transition will run)
+            tooltip.style.visibility = 'visible'; 
+            }
+
+            function hideTooltip() {
+                overlay.classList.remove('show');
+                tooltip.classList.remove('show');
+
+            // Reset inline style so it's hidden properly next time
+            tooltip.style.visibility = '';
+            tooltip.style.top = '';
+            tooltip.style.left = '';
+            }
+
+            // Close tooltip on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    hideTooltip();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

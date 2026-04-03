@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On-Premises Data Infrastructure Stack - Interactive Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .callout {
+            margin: 30px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .callout:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .callout-header {
+            padding: 20px 30px;
+            color: white;
+            font-size: 1.8em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .callout-header .icon {
+            font-size: 1.5em;
+        }
+
+        .callout-body {
+            padding: 30px;
+            background: white;
+        }
+
+        /* Color schemes for different layers */
+        .foundation {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .orchestration {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .storage {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .processing {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .query {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .subsection {
+            margin: 20px 0;
+        }
+
+        .subsection h4 {
+            color: #2980b9;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .pros, .cons {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .pros {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+        }
+
+        .cons {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+        }
+
+        .pros h5, .cons h5 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .pros h5 {
+            color: #155724;
+        }
+
+        .cons h5 {
+            color: #721c24;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .architecture-diagram {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .architecture-diagram pre {
+            white-space: pre;
+            line-height: 1.8;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        .tag-cloud {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .tag-onprem {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .tag-cost {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .info-box strong {
+            color: #1976d2;
+        }
+
+        .nav-toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 2px solid #dee2e6;
+        }
+
+        .nav-toc h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .nav-toc a {
+            display: block;
+            padding: 8px 15px;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .nav-toc a:hover {
+            background: #e9ecef;
+        }
+
+        .code-block {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+
+        .accordion {
+            margin: 10px 0;
+        }
+
+        .accordion-header {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .accordion-header:hover {
+            background: #2980b9;
+        }
+
+        .accordion-body {
+            display: none;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .accordion-body.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏗️ On-Premises Data Infrastructure Stack</h1>
+            <p>Complete Guide: From Hardware to Analytics</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">City of Wichita Data Lake Project</p>
+        </header>
+
+        <div class="content">
+            <!-- Table of Contents -->
+            <div class="nav-toc">
+                <h3>📋 Table of Contents</h3>
+                <a href="#foundation">1. The Foundation (Hardware & OS)</a>
+                <a href="#orchestration">2. The Data Center OS (Kubernetes)</a>
+                <a href="#storage">3. The Storage Layer (Data Lake)</a>
+                <a href="#processing">4. The Processing Layer (Apache Spark & Databricks)</a>
+                <a href="#query">5. The Query Engines (SQL Layer)</a>
+                <a href="#architecture">6. Complete Architecture</a>
+            </div>
+
+            <!-- FOUNDATION CALLOUT -->
+            <div id="foundation" class="callout">
+                <div class="callout-header foundation">
+                    <span class="icon">🖥️</span>
+                    <span>Layer 1: The Foundation (Hardware & OS)</span>
+                </div>
+                <div class="callout-body">
+                    <h3 class="section-title">Linux Servers: Your Base Infrastructure</h3>
+
+                    <div class="highlight-box">
+                        <strong>What it is:</strong>
+                        <p>Physical server hardware (bare metal) organized in server racks. This is the raw computing foundation equivalent to what AWS, Google Cloud, or Azure runs in their data centers.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>🐧 Linux Distribution Options</h4>
+                        <ul>
+                            <li><strong>Ubuntu Server:</strong> Popular, user-friendly, strong community support</li>
+                            <li><strong>Red Hat Enterprise Linux (RHEL):</strong> Enterprise-grade, commercial support, highly stable</li>
+                            <li><strong>CentOS Stream:</strong> Free alternative to RHEL, community-driven</li>
+                            <li><strong>Rocky Linux / AlmaLinux:</strong> RHEL alternatives after CentOS changes</li>
+                            <li><strong>Debian:</strong> Stable, lightweight, excellent for server workloads</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>⚙️ Hardware Requirements</h4>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Component</th>
+                                    <th>Specification</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>CPUs</strong></td>
+                                    <td>Intel Xeon / AMD EPYC<br>20-64+ cores per server</td>
+                                    <td>Parallel processing for analytics</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RAM</strong></td>
+                                    <td>256GB - 1TB+ per server</td>
+                                    <td>In-memory data processing (Spark)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Storage (Hot)</strong></td>
+                                    <td>NVMe SSDs (2-10TB)</td>
+                                    <td>Fast access to frequently used data</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Storage (Cold)</strong></td>
+                                    <td>HDDs (10-100TB)</td>
+                                    <td>Long-term archival storage</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Networking</strong></td>
+                                    <td>10Gbps - 100Gbps NICs</td>
+                                    <td>Fast data transfer between nodes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>🏢 Data Center Infrastructure Needs</h4>
+                        <div class="accordion">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                Rack Space & Physical Setup ▼
+                            </div>
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>Standard 42U server racks (7 feet tall)</li>
+                                    <li>Raised floor or cable management systems</li>
+                                    <li>Seismic protection (earthquake zones)</li>
+                                    <li>Physical security (card access, cameras, locks)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="accordion">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                Power & Electrical ▼
+                            </div>
+                            <div class="accordion-body">
+                                <ul>
+                                    <li><strong>Redundant Power Supplies:</strong> Dual PSUs in each server</li>
+                                    <li><strong>UPS Systems:</strong> 15-30 minutes of battery backup</li>
+                                    <li><strong>Generator Backup:</strong> Diesel generators for extended outages</li>
+                                    <li><strong>PDUs (Power Distribution Units):</strong> Intelligent power strips</li>
+                                    <li><strong>Power Capacity:</strong> Plan for 5-15 kW per rack</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="accordion">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                Cooling & HVAC ▼
+                            </div>
+                            <div class="accordion-body">
+                                <ul>
+                                    <li><strong>CRAC Units:</strong> Computer Room Air Conditioning</li>
+                                    <li><strong>Hot/Cold Aisle Design:</strong> Efficient airflow management</li>
+                                    <li><strong>Temperature Monitoring:</strong> 65-75°F (18-24°C) target</li>
+                                    <li><strong>Humidity Control:</strong> 40-60% relative humidity</li>
+                                    <li><strong>Redundant Cooling:</strong> N+1 HVAC configuration</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="accordion">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                Networking Infrastructure ▼
+                            </div>
+                            <div class="accordion-body">
+                                <ul>
+                                    <li><strong>Core Switches:</strong> High-capacity backbone (40-100Gbps)</li>
+                                    <li><strong>ToR Switches:</strong> Top of Rack switches (10-40Gbps)</li>
+                                    <li><strong>Firewalls:</strong> Network security appliances</li>
+                                    <li><strong>Load Balancers:</strong> Distribute traffic across servers</li>
+                                    <li><strong>Redundancy:</strong> Multiple network paths for failover</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>☁️ Cloud Equivalent:</strong>
+                        AWS EC2 instances, Azure Virtual Machines, Google Compute Engine - all running on similar physical infrastructure managed by the cloud provider.
+                    </div>
+
+                    <div class="subsection">
+                        <h4>💰 Cost Estimates (Foundation Layer)</h4>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Scale</th>
+                                    <th>Servers</th>
+                                    <th>Initial CapEx</th>
+                                    <th>Annual OpEx</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Small (Startup)</td>
+                                    <td>5-10 servers</td>
+                                    <td>$100K - $200K</td>
+                                    <td>$50K - $100K</td>
+                                </tr>
+                                <tr>
+                                    <td>Medium (Dept)</td>
+                                    <td>20-50 servers</td>
+                                    <td>$500K - $1M</td>
+                                    <td>$200K - $400K</td>
+                                </tr>
+                                <tr>
+                                    <td>Large (Enterprise)</td>
+                                    <td>100+ servers</td>
+                                    <td>$2M - $10M+</td>
+                                    <td>$1M - $5M+</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ORCHESTRATION CALLOUT -->
+            <div id="orchestration" class="callout">
+                <div class="callout-header orchestration">
+                    <span class="icon">☸️</span>
+                    <span>Layer 2: The Data Center OS (Kubernetes)</span>
+                </div>
+                <div class="callout-body">
+                    <h3 class="section-title">Kubernetes: Container Orchestration Platform</h3>
+
+                    <div class="highlight-box">
+                        <strong>What it is:</strong>
+                        <p>The "operating system" for your private cloud infrastructure. Kubernetes manages containerized applications across multiple servers, handling deployment, scaling, and failure recovery automatically.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>🎯 Why You Need Kubernetes</h4>
+                        <p>In modern infrastructure, you <strong>don't install software directly on Linux servers anymore</strong>. Instead:</p>
+                        <ol>
+                            <li>Package applications in <strong>containers</strong> (using Docker)</li>
+                            <li>Use <strong>Kubernetes</strong> to manage those containers across your cluster</li>
+                            <li>K8s handles deployment, scaling, monitoring, and recovery automatically</li>
+                        </ol>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>✨ Key Capabilities</h4>
+                        <div class="pros-cons" style="grid-template-columns: 1fr;">
+                            <div class="pros">
+                                <ul>
+                                    <li><strong>Auto-scaling:</strong> Automatically adds/removes containers based on workload</li>
+                                    <li><strong>High Availability:</strong> If a server dies, K8s reschedules containers elsewhere</li>
+                                    <li><strong>Resource Management:</strong> Intelligently allocates CPU, memory, storage</li>
+                                    <li><strong>Service Discovery:</strong> Applications can find each other automatically</li>
+                                    <li><strong>Rolling Updates:</strong> Update services without downtime</li>
+                                    <li><strong>Self-healing:</strong> Automatically restarts failed containers</li>
+                                    <li><strong>Load Balancing:</strong> Distributes traffic across healthy containers</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>🚀 Kubernetes Distributions for On-Premises</h4>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Distribution</th>
+                                    <th>Best For</th>
+                                    <th>Key Features</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Rancher</strong></td>
+                                    <td>Ease of use</td>
+                                    <td>Web UI, multi-cluster management</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Red Hat OpenShift</strong></td>
+                                    <td>Enterprise</td>
+                                    <td>Commercial support, security hardened</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Canonical K8s</strong></td>
+                                    <td>Ubuntu shops</td>
+                                    <td>Deep Ubuntu integration</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>VMware Tanzu</strong></td>
+                                    <td>VMware environments</td>
+                                    <td>vSphere integration</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Vanilla K8s</strong></td>
+                                    <td>Full control</td>
+                                    <td>Most flexible, most complex</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>📦 What Runs on Kubernetes</h4>
+                        <ul>
+                            <li>Apache Spark clusters (data processing)</li>
+                            <li>Trino/Presto query engines (SQL analytics)</li>
+                            <li>Databricks runtime (commercial Spark platform)</li>
+                            <li>MinIO storage nodes (object storage)</li>
+                            <li>Monitoring tools (Prometheus, Grafana)</li>
+                            <li>ETL/orchestration (Airflow, Dagster, Prefect)</li>
+                            <li>Metadata catalogs (DataHub, Amundsen)</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>☁️ Cloud Equivalent:</strong>
+                        AWS EKS (Elastic Kubernetes Service), Azure AKS (Azure Kubernetes Service), Google GKE (Google Kubernetes Engine)
+                    </div>
+                </div>
+            </div>
+
+            <!-- STORAGE CALLOUT -->
+            <div id="storage" class="callout">
+                <div class="callout-header storage">
+                    <span class="icon">💾</span>
+                    <span>Layer 3: The Storage Layer (Data Lake)</span>
+                </div>
+                <div class="callout-body">
+                    <h3 class="section-title">Storage Options for Your Data Lake</h3>
+
+                    <!-- HDFS Option -->
+                    <div class="subsection">
+                        <h4>Option 1: Apache Hadoop HDFS (Hadoop Distributed File System)</h4>
+
+                        <div class="highlight-box">
+                            <strong>What it is:</strong>
+                            <p>The original open-source distributed file system for big data. Created in 2006, it's designed to store massive datasets across many commodity servers with built-in replication for reliability.</p>
+                        </div>
+
+                        <div class="subsection">
+                            <strong>How it Works:</strong>
+                            <ul>
+                                <li>Data is split into blocks (typically 128MB each)</li>
+                                <li>Each block is replicated across 3 servers (configurable)</li>
+                                <li><strong>NameNode:</strong> Tracks metadata about where all blocks are stored</li>
+                                <li><strong>DataNodes:</strong> Store the actual data blocks</li>
+                            </ul>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h5>✅ Pros</h5>
+                                <ul>
+                                    <li>Proven at massive scale (exabytes)</li>
+                                    <li>Built-in data replication</li>
+                                    <li>Tight Hadoop ecosystem integration</li>
+                                    <li>Free and open-source</li>
+                                    <li>Battle-tested technology</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h5>❌ Cons</h5>
+                                <ul>
+                                    <li>Complex to set up and maintain</li>
+                                    <li>NameNode is single point of failure</li>
+                                    <li>Not S3-compatible (different APIs)</li>
+                                    <li>Older architecture</li>
+                                    <li>Requires dedicated servers</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>Best For:</strong> Existing Hadoop environments, very large datasets (petabytes+), batch processing workloads
+                        </div>
+                    </div>
+
+                    <hr style="margin: 30px 0;">
+
+                    <!-- MinIO Option -->
+                    <div class="subsection">
+                        <h4>Option 2: MinIO (Modern Object Storage) ⭐ Recommended</h4>
+
+                        <div class="highlight-box">
+                            <strong>What it is:</strong>
+                            <p>High-performance, cloud-native object storage system with <strong>S3-compatible API</strong>. The modern choice for building on-premises "data lakes" that work with cloud-native tools.</p>
+                        </div>
+
+                        <div class="subsection">
+                            <strong>How it Works:</strong>
+                            <ul>
+                                <li>Stores data as objects (like files) with metadata</li>
+                                <li>Distributed across multiple servers for redundancy</li>
+                                <li><strong>Erasure coding:</strong> More efficient than replication (similar to RAID)</li>
+                                <li><strong>RESTful API:</strong> S3-compatible for easy integration</li>
+                            </ul>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h5>✅ Pros</h5>
+                                <ul>
+                                    <li><strong>S3-compatible:</strong> Drop-in S3 replacement</li>
+                                    <li>Simpler than HDFS architecture</li>
+                                    <li>Works great on Kubernetes</li>
+                                    <li>High performance (SSD optimized)</li>
+                                    <li>Lightweight and easy to deploy</li>
+                                    <li>Modern table format support (Delta, Iceberg)</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h5>❌ Cons</h5>
+                                <ul>
+                                    <li>Newer than HDFS (less extreme-scale testing)</li>
+                                    <li>Smaller ecosystem than Hadoop</li>
+                                    <li>Requires learning object storage concepts</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>Best For:</strong> New data lake implementations, organizations wanting S3 compatibility on-premises, Kubernetes-based infrastructure, modern table formats (Delta Lake, Iceberg)
+                        </div>
+
+                        <div class="subsection">
+                            <h4>🔑 MinIO Key Features</h4>
+                            <ul>
+                                <li><strong>Multi-tenancy:</strong> Support for multiple departments/projects</li>
+                                <li><strong>Encryption:</strong> At-rest and in-transit encryption</li>
+                                <li><strong>Versioning:</strong> Keep multiple versions of objects</li>
+                                <li><strong>Lifecycle policies:</strong> Automatically move/delete old data</li>
+                                <li><strong>Replication:</strong> Multi-site replication for disaster recovery</li>
+                                <li><strong>IAM:</strong> Fine-grained access control</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>📊 Storage Comparison</h4>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>HDFS</th>
+                                    <th>MinIO</th>
+                                    <th>Cloud (S3/GCS/ADLS)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>API</strong></td>
+                                    <td>Custom HDFS API</td>
+                                    <td>S3-compatible</td>
+                                    <td>Native cloud APIs</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Deployment</strong></td>
+                                    <td>Complex</td>
+                                    <td>Simple (containers)</td>
+                                    <td>Managed service</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Performance</strong></td>
+                                    <td>Good (batch)</td>
+                                    <td>Excellent (SSD)</td>
+                                    <td>Excellent</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Maturity</strong></td>
+                                    <td>Very mature</td>
+                                    <td>Newer</td>
+                                    <td>Very mature</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>S3 Compatible</strong></td>
+                                    <td>No (needs gateway)</td>
+                                    <td>Yes (native)</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Best Use Case</strong></td>
+                                    <td>Hadoop ecosystem</td>
+                                    <td>Modern data lakes</td>
+                                    <td>Cloud-native</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>☁️ Cloud Equivalent:</strong>
+                        AWS S3 (MinIO is API-compatible), Azure Data Lake Storage Gen2, Google Cloud Storage
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROCESSING CALLOUT -->
+            <div id="processing" class="callout">
+                <div class="callout-header processing">
+                    <span class="icon">⚙️</span>
+                    <span>Layer 4: The Processing Layer (ETL Engines)</span>
+                </div>
+                <div class="callout-body">
+                    <h3 class="section-title">Data Processing Engines</h3>
+
+                    <!-- Apache Spark -->
+                    <div class="subsection">
+                        <h4>Option 1: Apache Spark (Open Source)</h4>
+
+                        <div class="highlight-box">
+                            <strong>What it is:</strong>
+                            <p>The industry-standard open-source framework for large-scale data processing. Performs ETL (Extract, Transform, Load) operations on big data with in-memory processing for speed (100x faster than older MapReduce).</p>
+                        </div>
+
+                        <div class="subsection">
+                            <strong>Key Capabilities:</strong>
+                            <ul>
+                                <li><strong>Batch Processing:</strong> Process large datasets in scheduled jobs</li>
+                                <li><strong>Stream Processing:</strong> Real-time data with Spark Streaming</li>
+                                <li><strong>SQL Queries:</strong> Run SQL on data with Spark SQL</li>
+                                <li><strong>Machine Learning:</strong> Built-in ML library (MLlib)</li>
+                                <li><strong>Graph Processing:</strong> GraphX for graph analytics</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <strong>How You'd Use It:</strong>
+                            <ol>
+                                <li>Run Spark jobs on your Kubernetes cluster</li>
+                                <li>Read data from MinIO/HDFS</li>
+                                <li>Transform data using Python (PySpark), Scala, or SQL</li>
+                                <li>Write results back to storage or a database</li>
+                            </ol>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h5>✅ Pros</h5>
+                                <ul>
+                                    <li>Industry standard, huge community</li>
+                                    <li>Very fast in-memory processing</li>
+                                    <li>Unified API for batch and streaming</li>
+                                    <li>Multiple language support (Python, Scala, Java, R)</li>
+                                    <li>Free and open-source</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h5>❌ Cons</h5>
+                                <ul>
+                                    <li>Can be complex to tune for performance</li>
+                                    <li>Resource-intensive (requires lots of RAM)</li>
+                                    <li>Steep learning curve for optimization</li>
+                                    <li>No built-in UI (need separate tools)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr style="margin: 30px 0;">
+
+                    <!-- Databricks -->
+                    <div class="subsection">
+                        <h4>Option 2: Databricks (Commercial Platform)</h4>
+
+                        <div class="highlight-box">
+                            <strong>What it is:</strong>
+                            <p>A commercial platform built on top of Apache Spark by Spark's original creators. Makes Spark much easier to use with polished UI, management tools, and includes Delta Lake - an optimized storage layer on top of data lakes.</p>
+                        </div>
+
+                        <div class="subsection">
+                            <strong>Key Features:</strong>
+                            <ul>
+                                <li><strong>Collaborative Notebooks:</strong> Jupyter-style notebooks for data science</li>
+                                <li><strong>Delta Lake:</strong> ACID transactions, time travel, schema evolution for data lakes</li>
+                                <li><strong>Optimized Spark:</strong> Performance-tuned Spark runtime (faster than open-source)</li>
+                                <li><strong>Unity Catalog:</strong> Data governance and metadata management</li>
+                                <li><strong>MLflow:</strong> Machine learning lifecycle management</li>
+                                <li><strong>Job Scheduling:</strong> Built-in orchestration and scheduling</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <strong>Deployment Options:</strong>
+                            <ul>
+                                <li><strong>Databricks on your own K8s cluster</strong> (on-premises)</li>
+                                <li><strong>Databricks on AWS/Azure/GCP</strong> (cloud-hosted but your account)</li>
+                            </ul>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h5>✅ Pros</h5>
+                                <ul>
+                                    <li>Much easier to use than raw Spark</li>
+                                    <li>Delta Lake adds critical features to data lakes</li>
+                                    <li>Great for data science teams (notebooks, ML tools)</li>
+                                    <li>Commercial support and managed service</li>
+                                    <li>Optimized performance</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h5>❌ Cons</h5>
+                                <ul>
+                                    <li><strong>Expensive:</strong> Requires commercial licensing</li>
+                                    <li>Vendor lock-in (Delta Lake works elsewhere but best on Databricks)</li>
+                                    <li>On-prem deployment still requires significant infrastructure</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>When to Use Databricks:</strong> You have budget for commercial software, data science team needs collaborative notebooks, want ACID transactions in your data lake, need enterprise support
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>☁️ Cloud Equivalent:</strong>
+                        Azure Synapse Spark Pools, AWS EMR (Elastic MapReduce), Google Cloud Dataproc, Databricks on cloud platforms
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUERY ENGINES CALLOUT -->
+            <div id="query" class="callout">
+                <div class="callout-header query">
+                    <span class="icon">🔍</span>
+                    <span>Layer 5: Query Engines (The SQL Layer)</span>
+                </div>
+                <div class="callout-body">
+                    <h3 class="section-title">SQL Query Engines for Analytics</h3>
+                    <p>Your analysts need to run fast SQL queries on your data lake, just like using Redshift or BigQuery.</p>
+
+                    <!-- Trino -->
+                    <div class="subsection">
+                        <h4>Option 1: Trino (formerly PrestoSQL) ⭐ Recommended</h4>
+
+                        <div class="highlight-box">
+                            <strong>What it is:</strong>
+                            <p>Open-source distributed SQL query engine with <strong>query federation</strong> capabilities. Query data where it lives (no need to load it first). Designed for interactive analytics with architecture similar to Google BigQuery's Dremel engine.</p>
+                        </div>
+
+                        <div class="subsection">
+                            <strong>How it Works:</strong>
+                            <ul>
+                                <li>Analysts write SQL queries in any BI tool (Tableau, Power BI, etc.)</li>
+                                <li>Trino connects to multiple data sources simultaneously</li>
+                                <li>Executes queries in parallel across many nodes</li>
+                                <li>Returns results fast (optimized for low-latency queries)</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <strong>Supported Data Sources:</strong>
+                            <span class="tag tag-cloud">MinIO/S3</span>
+                            <span class="tag tag-cloud">HDFS</span>
+                            <span class="tag tag-cloud">PostgreSQL</span>
+                            <span class="tag tag-cloud">MySQL</span>
+                            <span class="tag tag-cloud">SQL Server</span>
+                            <span class="tag tag-cloud">Hive</span>
+                            <span class="tag tag-cloud">Iceberg</span>
+                            <span class="tag tag-cloud">Delta Lake</span>
+                            <span class="tag tag-cloud">Kafka</span>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h5>✅ Pros</h5>
+                                <ul>
+                                    <li>Free and open-source</li>
+                                    <li>Very fast for interactive queries</li>
+                                    <li><strong>Query federation eliminates data movement</strong></li>
+                                    <li>Scales to hundreds of nodes</li>
+                                    <li>Active community and development</li>
+                                    <li>Standards-compliant SQL</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h5>❌ Cons</h5>
+                                <ul>
+                                    <li>Stateless (no data storage, needs underlying storage)</li>
+                                    <li>Less mature than commercial options</li>
+                                    <li>Requires tuning for optimal performance</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>Best For:</strong> Interactive analytics on data lakes, organizations with data in multiple systems, teams comfortable managing open-source software
+                        </div>
+                    </div>
+
+                    <hr style="margin: 30px 0;">
+
+                    <!-- ClickHouse -->
+                    <div class="subsection">
+                        <h4>Option 2: ClickHouse (Full MPP Database)</h4>
+
+                        <div class="highlight-box">
+                            <strong>What it is:</strong>
+                            <p>Open-source columnar database management system (DBMS) designed for <strong>blazing-fast analytics</strong> on massive datasets. Unlike Trino, you load data into ClickHouse for ultimate query performance.</p>
+                        </div>
+
+                        <div class="subsection">
+                            <strong>Architecture:</strong>
+                            <ul>
+                                <li><strong>Column-oriented storage:</strong> Optimized for analytical queries</li>
+                                <li><strong>Compression:</strong> 10x-100x data compression</li>
+                                <li><strong>Distributed:</strong> Shards data across multiple servers</li>
+                                <li><strong>Vectorized query execution:</strong> Uses CPU SIMD instructions for speed</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <strong>Key Features:</strong>
+                            <ul>
+                                <li><strong>Extremely fast:</strong> Queries often 100x faster than traditional databases</li>
+                                <li><strong>Real-time ingestion:</strong> Can handle millions of inserts per second</li>
+                                <li><strong>SQL support:</strong> Standard SQL with extensions</li>
+                                <li><strong>Materialized views:</strong> Pre-compute aggregations for instant results</li>
+                            </ul>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h5>✅ Pros</h5>
+                                <ul>
+                                    <li><strong>Fastest query performance</strong> of all options</li>
+                                    <li>Excellent compression (save on storage costs)</li>
+                                    <li>Great for time-series and event data</li>
+                                    <li>Real-time analytics (no batch ETL delays)</li>
+                                    <li>Free and open-source</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h5>❌ Cons</h5>
+                                <ul>
+                                    <li>Requires data to be loaded into ClickHouse (not query federation)</li>
+                                    <li>Limited UPDATE/DELETE support (append-only design)</li>
+                                    <li>Steeper learning curve</li>
+                                    <li>Not ACID compliant (eventually consistent)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>Best For:</strong> Real-time analytics dashboards, time-series data (logs, events, IoT), high-performance analytics workloads, when query speed is critical
+                        </div>
+                    </div>
+
+                    <hr style="margin: 30px 0;">
+
+                    <!-- Apache Impala -->
+                    <div class="subsection">
+                        <h4>Option 3: Apache Impala</h4>
+
+                        <div class="highlight-box">
+                            <strong>What it is:</strong>
+                            <p>Open-source MPP SQL query engine designed specifically for Hadoop. Created by Cloudera for low-latency SQL on HDFS.</p>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h5>✅ Pros</h5>
+                                <ul>
+                                    <li>Excellent integration with Hadoop ecosystem</li>
+                                    <li>Very fast on HDFS data</li>
+                                    <li>Production-proven at large scale</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h5>❌ Cons</h5>
+                                <ul>
+                                    <li>Primarily designed for HDFS (less flexible than Trino)</li>
+                                    <li>Smaller community than Trino</li>
+                                    <li>Less active development</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>Best For:</strong> Existing Hadoop/HDFS environments, teams already using Cloudera
+                        </div>
+                    </div>
+
+                    <hr style="margin: 30px 0;">
+
+                    <!-- Greenplum -->
+                    <div class="subsection">
+                        <h4>Option 4: Greenplum Database</h4>
+
+                        <div class="highlight-box">
+                            <strong>What it is:</strong>
+                            <p>Open-source MPP database originally by Pivotal (now VMware). Based on PostgreSQL with full ACID compliance and full-featured data warehouse capabilities.</p>
+                        </div>
+
+                        <div class="pros-cons">
+                            <div class="pros">
+                                <h5>✅ Pros</h5>
+                                <ul>
+                                    <li>PostgreSQL compatibility (easy migration)</li>
+                                    <li>Full SQL support with ACID guarantees</li>
+                                    <li>Mature and stable</li>
+                                    <li>Good for mixed workloads (OLTP + OLAP)</li>
+                                    <li>Built-in ML and geospatial functions</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h5>❌ Cons</h5>
+                                <ul>
+                                    <li>Heavier weight than ClickHouse</li>
+                                    <li>Slower than ClickHouse for pure analytics</li>
+                                    <li>Requires more operational expertise</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>Best For:</strong> Organizations using PostgreSQL, need ACID transactions in data warehouse, mixed transactional and analytical workloads
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>📊 Query Engine Comparison</h4>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Engine</th>
+                                    <th>Type</th>
+                                    <th>Query Speed</th>
+                                    <th>Data Location</th>
+                                    <th>Best Use Case</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Trino</strong></td>
+                                    <td>Query Federation</td>
+                                    <td>Fast</td>
+                                    <td>External (no load)</td>
+                                    <td>Multi-source analytics</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Impala</strong></td>
+                                    <td>Query Engine</td>
+                                    <td>Fast</td>
+                                    <td>HDFS</td>
+                                    <td>Hadoop environments</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ClickHouse</strong></td>
+                                    <td>Database</td>
+                                    <td>Very Fast</td>
+                                    <td>Internal (load data)</td>
+                                    <td>Real-time dashboards</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Greenplum</strong></td>
+                                    <td>Database</td>
+                                    <td>Fast</td>
+                                    <td>Internal (load data)</td>
+                                    <td>ACID + Analytics</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>☁️ Cloud Equivalent:</strong>
+                        Google BigQuery, AWS Athena, AWS Redshift, Azure Synapse Dedicated/Serverless SQL Pool, Snowflake
+                    </div>
+                </div>
+            </div>
+
+            <!-- ARCHITECTURE DIAGRAM -->
+            <div id="architecture" class="callout">
+                <div class="callout-header" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+                    <span class="icon">🏛️</span>
+                    <span>Complete On-Premises Stack Architecture</span>
+                </div>
+                <div class="callout-body">
+                    <div class="architecture-diagram">
+                        <pre>
+┌─────────────────────────────────────────────────────────────────┐
+│                   <strong>ANALYTICS & BI LAYER</strong>                          │
+│     (Tableau, Power BI, Looker, Metabase, Apache Superset)    │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+                              │ SQL Queries
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    <strong>QUERY ENGINE LAYER</strong>                          │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐      │
+│  │  Trino   │  │ Impala   │  │ClickHouse│  │Greenplum │      │
+│  │ (Query   │  │ (Query   │  │ (MPP DB) │  │ (MPP DB) │      │
+│  │  Fed)    │  │ Engine)  │  │          │  │          │      │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘      │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+                              │ Reads
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   <strong>PROCESSING LAYER</strong>                             │
+│  ┌────────────────────┐        ┌───────────────────┐           │
+│  │  Apache Spark      │        │   Databricks      │           │
+│  │  (Open Source)     │   OR   │  (Commercial)     │           │
+│  │  - ETL Jobs        │        │  - Delta Lake     │           │
+│  │  - ML Pipelines    │        │  - Notebooks      │           │
+│  └────────────────────┘        └───────────────────┘           │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+                              │ Reads/Writes
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                <strong>STORAGE LAYER (DATA LAKE)</strong>                       │
+│  ┌────────────────────┐              ┌───────────────────┐     │
+│  │  Apache HDFS       │      OR      │      MinIO        │     │
+│  │  (Hadoop DFS)      │              │  (S3-Compatible)  │     │
+│  │  - Legacy          │              │  - Modern         │     │
+│  │  - Proven Scale    │              │  - K8s Native     │     │
+│  └────────────────────┘              └───────────────────┘     │
+│                                                                 │
+│  Table Formats: Iceberg, Delta Lake, Hudi                     │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+                              │ Managed by
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│          <strong>ORCHESTRATION LAYER (DATA CENTER OS)</strong>                  │
+│                        Kubernetes (K8s)                         │
+│  - Container orchestration                                      │
+│  - Auto-scaling                                                │
+│  - High availability                                           │
+│  - Resource management                                         │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+                              │ Runs on
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│            <strong>FOUNDATION LAYER (HARDWARE & OS)</strong>                    │
+│                   Physical Linux Servers                        │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐      │
+│  │ Server 1 │  │ Server 2 │  │ Server 3 │  │ Server N │      │
+│  │ Ubuntu/  │  │ Ubuntu/  │  │ Ubuntu/  │  │ Ubuntu/  │      │
+│  │  RHEL    │  │  RHEL    │  │  RHEL    │  │  RHEL    │      │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘      │
+│                                                                 │
+│  Datacenter: Power, Cooling, Networking, Physical Security    │
+└─────────────────────────────────────────────────────────────────┘
+                        </pre>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="section-title">💰 Total Cost of Ownership</h3>
+
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Cost Category</th>
+                                    <th>Small (5-10 servers)</th>
+                                    <th>Medium (20-50 servers)</th>
+                                    <th>Large (100+ servers)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Initial CapEx</strong></td>
+                                    <td>$150K - $300K</td>
+                                    <td>$500K - $1M</td>
+                                    <td>$2M - $10M+</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Annual OpEx</strong></td>
+                                    <td>$200K - $400K</td>
+                                    <td>$500K - $1M</td>
+                                    <td>$1M - $5M+</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Staff Needed</strong></td>
+                                    <td>2-3 people</td>
+                                    <td>5-8 people</td>
+                                    <td>15-25 people</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Power Usage</strong></td>
+                                    <td>25-50 kW</td>
+                                    <td>100-250 kW</td>
+                                    <td>500-2000 kW</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="section-title">✅ Decision Matrix: On-Prem vs Cloud</h3>
+
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Factor</th>
+                                    <th>Choose On-Premises</th>
+                                    <th>Choose Cloud</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Data Size</strong></td>
+                                    <td>&gt; 100TB predictable growth</td>
+                                    <td>Variable or &lt; 100TB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Budget</strong></td>
+                                    <td>Can afford $1M+ CapEx</td>
+                                    <td>Prefer OpEx model</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Staff</strong></td>
+                                    <td>Have infrastructure experts</td>
+                                    <td>Lean engineering team</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Compliance</strong></td>
+                                    <td>Must stay on-prem by law</td>
+                                    <td>Standard compliance OK</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Workload</strong></td>
+                                    <td>Steady, predictable</td>
+                                    <td>Bursty, variable</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Latency</strong></td>
+                                    <td>Need lowest latency</td>
+                                    <td>Can tolerate internet latency</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Control</strong></td>
+                                    <td>Want full control</td>
+                                    <td>Want managed services</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Timeline</strong></td>
+                                    <td>Can wait 6-12 months</td>
+                                    <td>Need to start in weeks</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <h3>📚 Document Information</h3>
+            <p><strong>Version:</strong> 1.0</p>
+            <p><strong>Last Updated:</strong> November 5, 2025</p>
+            <p><strong>Prepared for:</strong> City of Wichita Data Lake Project</p>
+            <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.8;">
+                This document provides a comprehensive overview of on-premises data infrastructure components and their cloud equivalents.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Accordion functionality
+        function toggleAccordion(element) {
+            const body = element.nextElementSibling;
+            body.classList.toggle('active');
+
+            // Update arrow indicator
+            if (body.classList.contains('active')) {
+                element.innerHTML = element.innerHTML.replace('▼', '▲');
+            } else {
+                element.innerHTML = element.innerHTML.replace('▲', '▼');
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-toc a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.callout').forEach(callout => {
+            callout.style.opacity = '0';
+            callout.style.transform = 'translateY(20px)';
+            callout.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(callout);
+        });
+    </script>
+</body>
+</html>

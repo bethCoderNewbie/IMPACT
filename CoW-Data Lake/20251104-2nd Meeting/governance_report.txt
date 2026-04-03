@@ -1,0 +1,348 @@
+====================================================================================================
+LASERFICHE GOVERNANCE ANALYSIS - INFORMATION AVAILABLE vs NEEDED
+====================================================================================================
+
+====================================================================================================
+1. DATA CLASSIFICATION SCHEMA
+====================================================================================================
+
+AVAILABLE IN FILES:
+  - Security Tags found: 0
+    • No explicit security tags found in the data
+
+NEEDED INFORMATION:
+  ❌ Data classification levels (Public, Internal, Confidential, Restricted)
+  ❌ Specific definitions for each classification level
+  ❌ Handling rules for each classification level
+  ❌ Who can access each classification level
+  ❌ Storage requirements per classification
+
+====================================================================================================
+2. FILE NAMING & METADATA STANDARDS
+====================================================================================================
+
+AVAILABLE IN FILES:
+  - Metadata Fields identified: 32
+    • Abbr
+    • Airport Name
+    • Awards
+    • Classification
+    • Code
+    • Cultural Arts Board
+    • Cultural Arts Division
+    • Cutoff
+    • Description
+    • Disposition
+    • District
+    • Division
+    • Division Coordinator - Rhonda Harper
+    • Division Coordinator -Logan Walker
+    • Division Coordinator -Mandee Greer
+    • DocClass
+    • DocType
+    • Drop downs for: Advanced Plans; Current Plans; Historic Preservation
+    • Long Desc
+    • Name
+    • Need:
+    • RMCutoff
+    • RMCuttoff
+    • RMRetention
+    • RMSeries
+    • Retention
+    • SecTag
+    • Short Desc
+    • Template
+    • Type
+    • abv
+    • subfolders
+
+  - Document Abbreviations: 432
+    • 139-FUELINSP = Part 139 Fuel Truck Inspections
+    • ACT-RP = Activity Reporting
+    • AMI = Asset Management Inventory
+    • AVSEC = AVSEC Notification
+    • BR-INV = Bridge Inventory
+    • CASE-REQ = Documentation for Case Request
+    • CAT-EX = Categorical Exclusions
+    • DAY-BLTN = Daily Bulletin
+    • KEY-CTRL = Key Control
+    • SNOW = Snow Removal Logs
+    ... and 422 more
+
+NEEDED INFORMATION:
+  ❌ Complete file naming convention schema with examples
+  ❌ Naming logic/rules (e.g., [Dept]-[Type]-[Date]-[Description].ext)
+  ❌ Which metadata fields are MANDATORY vs OPTIONAL
+  ❌ Validation rules for metadata (formats, allowed values)
+  ❌ Default values for metadata fields
+  ❌ Metadata inheritance rules (folder-level vs document-level)
+
+====================================================================================================
+3. RECORDS COORDINATORS / DATA STEWARDS
+====================================================================================================
+
+AVAILABLE IN FILES:
+  - Partial user access requirements found in Notes sections:
+    • [AP-D-001-Airport Documents.xlsx] List of users - LF license
+    • [AP-D-002-Airports.xlsx] List of users - LF license
+    • [CA-D-001-Cultrual Arts Documents.xlsx] Names of all who will need access to Laserfiche: Lindsay Benacka, Jesse Koza, Ja
+
+NEEDED INFORMATION:
+  ❌ Complete list of 30 records coordinators with names and contact info
+  ❌ Department assignment for each coordinator
+  ❌ Specific responsibilities for each coordinator
+  ❌ Training requirements for coordinators
+  ❌ Escalation procedures when coordinator is unavailable
+  ❌ Performance metrics/KPIs for coordinators
+
+====================================================================================================
+4. STAKEHOLDER ROLES (RACI MATRIX)
+====================================================================================================
+
+AVAILABLE IN FILES:
+  - Departments identified: Airport, COMMUNITY SERVICES, COURT, Council, Finance, General, MAPC, PROPERTY MANAGEMENT, PUBLIC WORKS, TRANSPORTATION
+    ... and 12 more
+
+NEEDED INFORMATION:
+  ❌ Complete RACI matrix (Responsible, Accountable, Consulted, Informed)
+  ❌ IT Department roles and responsibilities
+  ❌ Legal Department roles and responsibilities
+  ❌ Department Head responsibilities
+  ❌ City Clerk's role in records management
+  ❌ Audit and compliance oversight roles
+  ❌ Escalation paths for governance issues
+
+====================================================================================================
+5. RETENTION SCHEDULES
+====================================================================================================
+
+AVAILABLE IN FILES:
+  - Cutoff Types: 8
+    • CO-01
+    • CO-01 File Date
+    • CO-02
+    • CO-02 Expiration
+    • CO-03 Superseded: When a document gets superseded.
+    • CO-04 OBS/NLU
+    • CO-05 Completion: Cutoff Begins on Project completion
+    • CO-07 Employee Term
+
+  - Retention Periods: 33
+    • 01 year
+    • 02 years
+    • 03 years
+    • 04 years
+    • 05 Years
+    • 05 years
+    • 06 years
+    • 07 years
+    • 08 Years
+    • 08 years
+    • 1 year
+    • 10 years
+    • 10 years unless an issue is in litigation
+    • 15 years
+    • 15 years until bonds pay out
+    • 2 years
+    • 20 years
+    • 3 years
+    • 30 years
+    • 5 years
+    • 5 years or until all statute of limitations have expired, whichever is longer
+    • 5 years until expired or cancelled
+    • 7 years
+    • As long as LOC is outstanding
+    • As long as the assessment is outstanding
+    • PW-D-002-Public Works Environmental Health
+    • Permanent
+    • life of contract plus 5 years  (minimum of 15 years)
+    • life of contract plus 5 years (minimum of 15 years)
+    • permanent
+    • program or policy term, inactive 15 years
+    • until death
+    • until paid
+
+  - Disposition Types:
+    • Desroy
+    • Destroy
+    • Destroy 5 years after all litigations, audits resolved
+    • Permanent
+    • Permanent 1 copy
+    • Retain 1 perm copy
+    • destroy
+    • destroy 10 years past bond maturity or 25 years from date of bond sold
+    • destroy 3 years after contract ends
+    • destroy 3 years after end of employment
+    • destroy 3 years after grant is closed
+    • destroy after 5 years
+    • destroy; retain 1 bond of each series permanently
+    • permanent
+    • retain
+    • retain 3 copies permanently
+    • until death
+    • until paid
+
+  - Record Management Series:
+
+NEEDED INFORMATION:
+  ❌ Source of retention schedules (City Clerk's office? State law? Federal?)
+  ❌ How retention schedules are updated/maintained
+  ❌ Legal citations for retention requirements
+  ❌ Exceptions to standard retention rules
+  ❌ Hold/litigation hold procedures
+  ❌ How to handle documents with multiple retention requirements
+
+====================================================================================================
+6. RETENTION ENFORCEMENT
+====================================================================================================
+
+AVAILABLE IN FILES:
+  - Cutoff triggers defined (File Date, Expiration, Superseded, etc.)
+
+NEEDED INFORMATION:
+  ❌ Is retention enforcement automated or manual?
+  ❌ What metadata field triggers the retention countdown?
+  ❌ Notification system before disposition
+  ❌ Approval workflow for disposition
+  ❌ Audit trail for disposed records
+  ❌ Recovery procedures for accidentally disposed records
+  ❌ System configuration for automated retention
+
+====================================================================================================
+7. ACCESS CONTROL MODEL
+====================================================================================================
+
+AVAILABLE IN FILES:
+  - Security Tags referenced in documents
+  - Departments/templates suggest departmental boundaries
+
+NEEDED INFORMATION:
+  ❌ Complete access control model documentation
+  ❌ User role definitions (e.g., Admin, Power User, Read-Only)
+  ❌ Permission levels (Read, Write, Delete, Share, etc.)
+  ❌ How departmental boundaries enforce access
+  ❌ Cross-department access procedures
+  ❌ Privileged access management (PAM) for sensitive data
+  ❌ Service account management
+
+====================================================================================================
+8. SENSITIVE DATA ACCESS WORKFLOW
+====================================================================================================
+
+AVAILABLE IN FILES:
+  - No explicit workflow documentation found
+
+NEEDED INFORMATION:
+  ❌ Definition of 'sensitive data' in this context
+  ❌ Request submission process
+  ❌ Approval authority matrix
+  ❌ Timeframe for access request processing
+  ❌ Temporary vs permanent access procedures
+  ❌ Access review and recertification schedule
+  ❌ Logging and monitoring of sensitive data access
+
+====================================================================================================
+9. DATA EXPORT & SYSTEM CONNECTION
+====================================================================================================
+
+AVAILABLE IN FILES:
+  - No export or integration documentation found
+
+NEEDED INFORMATION:
+  ❌ Export capabilities and restrictions
+  ❌ API availability for system integration
+  ❌ Data format standards for exports
+  ❌ Governance rules that apply to exported data
+  ❌ Metadata preservation in exports
+  ❌ Integration with future data lake or analytics platforms
+  ❌ Export approval workflow
+  ❌ Audit trail for data exports
+
+====================================================================================================
+10. GOVERNANCE ADOPTION CHALLENGES
+====================================================================================================
+
+AVAILABLE IN FILES:
+  - Notes sections show requirements being gathered
+  - Multiple departments with different needs
+
+NEEDED INFORMATION:
+  ❌ Historical adoption challenges (lessons learned)
+  ❌ Change management strategy
+  ❌ Training programs and materials
+  ❌ Compliance monitoring and enforcement
+  ❌ User feedback mechanisms
+  ❌ Success metrics and adoption rates
+  ❌ Ongoing governance improvements
+
+====================================================================================================
+SUMMARY OF ADDITIONAL DOCUMENTS NEEDED
+====================================================================================================
+
+To fully answer the governance questions, you need:
+
+1. 📄 Data Classification Policy Document
+   - Classification levels and definitions
+   - Handling requirements per level
+   - Access requirements per level
+
+2. 📄 Laserfiche Configuration/Setup Documentation
+   - File naming convention standards
+   - Mandatory vs optional metadata fields
+   - Template configurations
+   - Validation rules
+
+3. 📄 Records Coordinator List & Responsibilities
+   - Names and contact information
+   - Department assignments
+   - Role descriptions
+
+4. 📄 RACI Matrix / Governance Charter
+   - Roles and responsibilities for all stakeholders
+   - Decision-making authority
+   - Escalation procedures
+
+5. 📄 Official Retention Schedule Documentation
+   - Source and legal basis
+   - Update procedures
+   - Exception handling
+
+6. 📄 Retention Enforcement Procedures
+   - Automation configuration
+   - Manual procedures
+   - Approval workflows
+
+7. 📄 Access Control Policy & Procedures
+   - Role definitions
+   - Permission matrices
+   - Access request workflows
+
+8. 📄 Sensitive Data Handling Policy
+   - Definition of sensitive data
+   - Special access procedures
+   - Audit requirements
+
+9. 📄 Data Integration & Export Policy
+   - Export procedures
+   - API documentation
+   - Integration governance
+
+10. 📄 Change Management & Training Documentation
+   - Adoption strategy
+   - Training materials
+   - Lessons learned
+
+====================================================================================================
+KEY STAKEHOLDERS TO INTERVIEW
+====================================================================================================
+
+1. 👤 Laserfiche System Administrator(s)
+2. 👤 City Clerk or Records Manager
+3. 👤 IT Department Leadership
+4. 👤 Legal Department Representative
+5. 👤 Sample of Records Coordinators (3-5 from different departments)
+6. 👤 Department Heads (especially heavy users)
+7. 👤 Information Security Officer
+8. 👤 Compliance/Audit Representative
+
+====================================================================================================

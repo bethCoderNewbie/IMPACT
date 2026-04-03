@@ -1,0 +1,26 @@
+The Processing (ETL): Apache Spark / DataBricks
+This is the Prep & Cooking Line. This is where the actual transformation happens.
+
+Databricks:
+DataBricks is like buying a pre-built, high-end "kitchen station" from a premium brand. It comes with optimized, razor-sharp knives and smart-ovens (an optimized Spark engine) that make the entire cooking process much faster and easier for your cooks.
+
+Kubernetes
+
+
+The Query Engine (The "SQL" part)
+(The ClickHouse/Greenplum alternative): This is like a hot-food buffet. The most popular dishes (like the spaghetti and sauce) have already been fully cooked and loaded into the buffet trays (loaded into the ClickHouse database) so customers can get them instantaneously.
+
+
+
+Hadoop Distributed File System (HDFS)
+
+
+, Apache Spark, S3 vs Azure Blob, Azure Synapse, Pytorch, Anacoda, Copilot Studio, take a look around HuggingFace.com
+
+AI tools: Pytorch, Anacoda, Copilot Studio, take a look around HuggingFace.com, Read about Inference, RAG architecture, 
+ 
+Cheat Sheet for - 
+Google Cloud Platform (GCP) BigQuery 
+Microsoft Azure - Azure Synapse Analytics
+Amazon Web Services (AWS) Amazon Redshift
+Compare and Contrast. Look into what it would take to replicate on premise. Using a combination on Linux servers, Apache, Data Bricks or Kubernetes. 
