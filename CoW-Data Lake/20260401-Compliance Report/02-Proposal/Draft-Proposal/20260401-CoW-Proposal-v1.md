@@ -28,15 +28,15 @@ CoW has invested in Laserfiche Cloud and structured its 45 data management lists
 
 **Specific gaps confirmed during October–November 2025 discovery:**
 
-| Gap | Impact |
-|---|---|
-| No formal data classification policy | Records cannot be consistently secured or shared |
-| Security tag (`SecTag`) field is empty in all 45 files | No records have a security classification — all data is treated the same |
-| No access control model or documented user roles | Cannot demonstrate who can access what, or why |
-| No retention enforcement automation confirmed | Records may be disposed too early or held too long |
-| No governance charter or RACI matrix | Accountability for governance decisions is unclear |
-| No sensitive data handling procedures | Compliance risk for CJIS, HIPAA-adjacent, and legally privileged records |
-| 609 data quality issues in the metadata foundation | Automation built on this data will produce incorrect results |
+| Gap | Impact | Risk |
+|---|---|---|
+| No formal data classification policy | Records cannot be consistently secured or shared | 🔴 Critical |
+| `SecTag` field empty in all 45 files — zero records classified | No security differentiation possible; all records treated identically regardless of sensitivity | 🔴 Critical |
+| No access control model or documented user roles | Cannot demonstrate who can access what, or why; audit exposure | 🔴 Critical |
+| No retention enforcement automation confirmed | Records may be disposed too early (K.S.A. violation) or held indefinitely | 🔴 Critical |
+| No sensitive data handling procedures | CJIS compliance risk (Police Dept.); HIPAA-adjacent risk (Community Services, Housing); no Agency Security Officer designated | 🔴 Critical |
+| No governance charter or RACI matrix | Accountability for governance decisions is unclear | 🟡 Medium |
+| 609 data quality issues in the metadata foundation — 45 are blocking | 45 issues will cause Laserfiche automation to fail or misroute records; 558 are cosmetic but indicate absent validation | 🟠 High |
 
 ### 2.2 System Requirements Undefined
 
@@ -82,18 +82,20 @@ CoW has conceptually committed to modernizing its data environment but has not y
 
 ## 4. The 10 Governance Domains We Will Assess
 
-| # | Domain | Current Status |
-|---|---|---|
-| 1 | Data Classification Schema | No formal policy; `SecTag` field empty across all records |
-| 2 | File Naming & Metadata Standards | Naming structure exists; 6 column header misspellings; no validation enforced |
-| 3 | Records Coordinators / Data Stewards | 30+ coordinators identified; roles partially defined; no formal charter |
-| 4 | Stakeholder Roles (RACI Matrix) | No RACI exists; accountability structure informal |
-| 5 | Retention Schedules | 33 periods defined; legal citation source not confirmed |
-| 6 | Retention Enforcement | Triggers defined; automation status in Laserfiche unconfirmed |
-| 7 | Access Control Model | No documented access model; no user role definitions |
-| 8 | Sensitive Data Access Workflow | No documented process for flagging or accessing sensitive records |
-| 9 | Data Export & System Connections | No export governance; Laserfiche integration points undefined |
-| 10 | Governance Adoption & Change Management | No training program; no adoption metrics; no change management plan |
+> **Enhanced gap matrix available:** A full compliance gap matrix with risk severity ratings, evidence citations, regulatory obligations, peer benchmark status, recommended owners, and stakeholder interview questions has been developed as an input document for Deliverable 2. See `05-Discovery/Gap-Analysis-Inputs/20260401-CoW-Enhanced-Gap-Matrix-v1.md`.
+
+| # | Domain | Current Status | Risk Severity |
+|---|---|---|---|
+| 1 | Data Classification Schema | No formal policy; `SecTag` field empty across all 45 files — zero records classified | 🔴 Critical |
+| 2 | File Naming & Metadata Standards | Naming structure exists; 609 data quality issues (45 blocking automation); no validation enforced | 🟠 High |
+| 3 | Records Coordinators / Data Stewards | 30+ coordinators identified; roles partially defined; no formal charter | 🟡 Medium |
+| 4 | Stakeholder Roles (RACI Matrix) | No RACI exists; accountability structure informal | 🟡 Medium |
+| 5 | Retention Schedules | 33 periods defined; legal citation source not confirmed against K.S.A. 12-120/121 | 🟠 High |
+| 6 | Retention Enforcement | Triggers defined; Laserfiche RM module configuration unconfirmed; no disposition approval workflow | 🔴 Critical |
+| 7 | Access Control Model | No documented model; no user role definitions; no security groups confirmed in Laserfiche | 🔴 Critical |
+| 8 | Sensitive Data Access Workflow | No CJIS or HIPAA-adjacent procedures; no ASO designated; Police and Community Services records unprotected | 🔴 Critical |
+| 9 | Data Export & System Connections | No export governance; data lake integration requirements undefined | 🟠 High |
+| 10 | Governance Adoption & Change Management | No training program; no adoption metrics; no change management plan | 🟢 Low |
 
 ---
 
@@ -118,11 +120,11 @@ An international standard focused on data quality management and master data exc
 
 ### Peer City & Industry Benchmarking
 
-CoW explicitly asked us to research what comparable cities are doing and what professional associations recommend. This research will be completed during Weeks 2–3 and incorporated into Deliverable 1. The following questions frame the research scope.
+CoW explicitly asked us to research what comparable cities are doing and what professional associations recommend. A preliminary benchmarking research report (v2, April 2, 2026) has been completed and incorporated into this section. Direct outreach to peer city staff is scheduled for Week 1 to supplement published-source findings. Final benchmarking results will be incorporated into Deliverable 1.
 
 #### Peer Cities
 
-CoW identified four peer cities for benchmarking: **Kansas City (MO)**, **Tulsa (OK)**, **Omaha (NE)**, and **Austin (TX)**. These cities are comparable in scale, regional context, or governance ambition. For each, we will research:
+CoW's official peer city list (sourced from the city budget book, confirmed at the April 2026 client meeting) includes: **Kansas City (MO)**, **Tulsa (OK)**, **Omaha (NE)**, **Austin (TX)**, **Des Moines (IA)**, and **Denver (CO)**. Fort Worth, TX was also noted as a city used for grants system comparisons. The initial benchmarking research (v2, April 2, 2026) covered Austin, Kansas City, Tulsa, and Omaha. Des Moines and Denver will be researched during Week 1 direct outreach and incorporated into Deliverable 1. For each city, we will research:
 
 - What data governance framework (if any) they have formally adopted
 - How they handle records retention enforcement across departments
@@ -133,17 +135,19 @@ CoW identified four peer cities for benchmarking: **Kansas City (MO)**, **Tulsa 
 
 | City | What Is Known | Research Priority |
 |---|---|---|
-| **Austin, TX** | Advanced open data program; Data & Technology Services department published a data governance framework; known to reference DAMA principles | High — most documented; likely confirms DAMA direction |
-| **Kansas City, MO** | Smart city initiative with a data lake and analytics platform (KC Stat); data governance less publicly documented but IT governance program exists | High — closest in data lake ambition to CoW |
-| **Tulsa, OK** | Oklahoma state records management program in place; city-level governance less documented | Medium — regional peer; useful for retention schedule comparison |
-| **Omaha, NE** | Comparable Midwest city; limited public documentation on data governance maturity | Medium — useful as a baseline comparison if governance is early-stage |
+| **Austin, TX** | Custom governance framework built on 2013 Open Government Directive and Texas statutes (TPIA, Texas HB 149/TRAIGA); two-tier classification (Public / Non-Public) in contract terms only; no standalone data classification policy; no CDO; Open Data Liaisons model (one designated per department) | High — most documented; confirms that all peer cities built custom frameworks rather than adopting a named standard |
+| **Kansas City, MO** | 2025 Data Governance Charter (July 1, 2025) + UK GDS-adapted Data Service Standard (Oct 2025); CDO role formalized in City Code Section 2-2133; 4-tier classification (Public / Private / Sensitive / Confidential); named 6-member Governance Committee; Data Owners + Data Stewards defined; Bloomberg Gold Certification | High — most mature committee structure and classification model among peers; charter and committee structure directly adaptable for CoW |
+| **Tulsa, OK** | Series of executive orders (2015–2019) + COP 1400 (Feb 26, 2026); 4-tier classification (Public / Internal / Sensitive / Protected) with explicit approval chains for sensitive and protected records; 4-role stewardship model; 3-tier Active Directory access control; Urban Data Pioneers adoption program; Bloomberg Silver Certification | High — 7 of 10 governance domains have explicit published policy; single most reusable peer governance model for CoW |
+| **Omaha, NE** | No formal governance program found; no CDO; IT services shared via DOTComm; included as cautionary baseline — governance fragmentation documented since 1982 | Medium — documents the cost of inaction; not a reusable governance model |
+| **Des Moines, IA** | On CoW's official budget book peer list; governance program unknown — research scheduled for Week 1 | High — official peer; Iowa Code Chapter 304 provides state records baseline; city-level program TBD |
+| **Denver, CO** | On CoW's official budget book peer list; governance program unknown — research scheduled for Week 1 | High — official peer; Colorado CRS Title 24 Art. 80 provides state records baseline; city-level program TBD |
 
 #### Professional Associations
 
 | Association | Relevance to CoW |
 |---|---|
 | **ICMA (International City/County Management Association)** | Publishes data governance guidance specifically for local government; Center for Management and Technology resources address records management, data quality, and analytics maturity. ICMA does not endorse a single framework but consistently references DAMA-aligned principles in its publications. |
-| **Bloomberg Philanthropies — What Works Cities (WWC)** | Operates a certification program for city governments on data use and governance. The WWC Standard includes a Data Governance component with explicit criteria around data classification, retention policies, stewardship roles, and access control — directly mapping to CoW's 10 governance domains. Cities that achieve WWC Certification typically align their internal governance programs to WWC criteria. This is a strong candidate for CoW to consider alongside or within DAMA. |
+| **Bloomberg Philanthropies — What Works Cities (WWC)** | Operates a certification program for city governments on data use and governance. The WWC Standard includes a Data Governance component with explicit criteria around data classification, retention policies, stewardship roles, and access control — directly mapping to CoW's 10 governance domains. CoW was a past WWC participant; per the April 2026 client meeting, staff were assigned to complete re-enrollment. No Kansas city holds WWC Certification — if CoW pursues and earns it, it would be the first. Kansas City (Gold) and Tulsa (Silver) demonstrate this is achievable for mid-size Midwest cities. |
 
 #### Common Challenges We Will Research
 
@@ -158,7 +162,7 @@ These challenge-based findings will appear in the Deliverable 1 benchmarking sec
 
 #### How Peer Research Affects the Standards Recommendation
 
-If peer city research confirms that Austin, Kansas City, or ICMA-guided cities use DAMA-DMBOK v2 as their primary reference, it strengthens the preliminary recommendation. If Bloomberg What Works Cities is a certification CoW's leadership wants to pursue, the WWC Standard becomes the primary framework and DAMA serves as a supporting reference. We will present both paths in Deliverable 1 if the research surfaces this option.
+Peer research (completed April 2, 2026) found that none of the four peer cities formally adopt DAMA. Austin, Kansas City, and Tulsa each built custom governance frameworks; DAMA knowledge areas are consistent with — but not cited in — those frameworks. This finding reframes rather than undermines the DAMA recommendation: CoW should enact governance authority through an executive order or resolution (as all peers did) and use DAMA as the internal implementation guide to ensure comprehensive coverage. If Bloomberg What Works Cities is a certification CoW's leadership wants to pursue, WWC criteria become the primary external benchmark and DAMA serves as the supporting implementation reference. We will present both paths in Deliverable 1.
 
 ---
 
@@ -169,7 +173,7 @@ If peer city research confirms that Austin, Kansas City, or ICMA-guided cities u
 | **Regulatory obligation** | Not mandated, but aligns with Kansas records management statutes and AR 8.4 without conflict | Only relevant to public data release under AR 8.4; does not satisfy broader governance obligations | Not mandated; no conflict with Kansas law, but no alignment either |
 | **Maturity match** | Designed for incremental adoption; DMM model explicitly supports low-maturity organizations building from scratch — fits CoW's current state | Too narrow to build a maturity program around; cannot anchor a governance improvement roadmap | Addresses data quality improvement incrementally, but covers only 2 of 10 governance domains CoW needs to close |
 | **Coverage fit** | Covers all 10 governance domains under review: classification, metadata, stewardship, RACI, retention, enforcement, access control, sensitive data, integration, and adoption | Covers Domain 8 (sensitive data handling) and parts of Domain 9 (data export) only; silent on all other domains | Covers Domains 2 (metadata standards) and parts of Domain 5 (retention data quality); silent on governance structure, access, enforcement, and adoption |
-| **Peer precedent** | Austin TX references DAMA principles in its published data governance framework; ICMA publications consistently reference DAMA-aligned principles; Kansas DAMA chapter exists; Bloomberg What Works Cities certification aligns closely with DAMA knowledge areas | Used by federal agencies and research institutions for public data release; not referenced in ICMA, WWC, or peer city governance programs | Common in manufacturing and enterprise; limited precedent in municipal government; not referenced by ICMA or peer cities |
+| **Peer precedent** | No peer city formally adopts DAMA. All four peers built custom governance frameworks (executive orders, charters) without referencing DAMA as a parent standard. However, the governance structures they independently developed — four-tier classification, stewardship roles, metadata requirements, access control — are fully consistent with DAMA knowledge areas. DAMA is the implementation guide that ensures CoW doesn't leave governance domains undocumented that peer cities have also left undocumented. ICMA does not endorse a specific framework. Bloomberg WWC criteria overlap substantially with DAMA but do not require DAMA adoption | Used by federal agencies and research institutions for public data release; not referenced in ICMA, WWC, or peer city governance programs | Common in manufacturing and enterprise; limited precedent in municipal government; not referenced by ICMA or peer cities |
 | **Future roadmap** | Knowledge areas for Data Architecture, Data Warehousing, and Data Integration directly map to CoW's planned data lake environment (ingestion, storage, query, reporting layers) | No guidance on data lake architecture, system integration, or analytics environments | ISO 8000-110 (master data exchange) aligns with the Master Table model and Laserfiche integration, but does not address the broader data lake architecture |
 
 **Scoring summary (H = High fit / M = Medium fit / L = Low fit):**
@@ -179,7 +183,7 @@ If peer city research confirms that Austin, Kansas City, or ICMA-guided cities u
 | Regulatory obligation | H | M (narrow) | M (neutral) |
 | Maturity match | H | L | M |
 | Coverage fit | H | L | M |
-| Peer precedent (peer cities + ICMA + WWC) | H | L | L |
+| Peer precedent (peer cities + ICMA + WWC) | M | L | L |
 | Future roadmap | H | L | M |
 | **Overall** | **Strong** | **Weak** | **Partial** |
 
@@ -189,8 +193,8 @@ If peer city research confirms that Austin, Kansas City, or ICMA-guided cities u
 
 Based on CoW's current state, regulatory environment, and planned data lake modernization:
 
-**Primary framework: DAMA-DMBOK v2**
-DAMA is the only framework that covers all 10 governance domains CoW needs to address, supports low-maturity organizations building incrementally, aligns with municipal government precedent, and maps directly to the data lake architecture CoW is planning. The DMM maturity model gives CoW a scoring baseline today and a structured improvement path going forward.
+**Primary framework: DAMA-DMBOK v2 — as implementation guide for a custom governance policy**
+DAMA is the only framework that covers all 10 governance domains CoW needs to address, supports low-maturity organizations building incrementally, and maps directly to the data lake architecture CoW is planning. No peer city formally adopted DAMA as their primary standard — Austin, Kansas City, and Tulsa each built custom governance policies through executive orders and charters, then implemented those policies in their systems. CoW should follow the same pattern: enact governance authority through an executive order or resolution, using Tulsa's COP 1400 and Kansas City's 2025 Governance Charter as direct policy references, with DAMA-DMBOK v2 as the internal implementation guide that ensures comprehensive domain coverage. The DMM maturity model gives CoW a scoring baseline today and a structured improvement path going forward.
 
 **Supplement with ISO 8000 for data quality and master data domains**
 ISO 8000-61 (data quality management) and ISO 8000-110 (master data exchange) provide specific, implementable standards for the metadata quality issues identified (609 issues across 45 files) and for the Master Table governance model CoW has already committed to. These complement DAMA rather than replace it.
@@ -207,7 +211,7 @@ This preliminary recommendation will be confirmed, adjusted, or overridden based
 | If interviews reveal... | Recommendation adjusts to... |
 |---|---|
 | CoW leadership wants to pursue Bloomberg What Works Cities certification | WWC Standard becomes the primary governance framework; DAMA used as the supporting implementation reference |
-| Peer city research confirms Kansas City or Tulsa uses a different standard CoW wants to benchmark against | Adopt that standard to enable direct peer comparison; note gaps vs. DAMA |
+| Peer city research confirms Kansas City or Tulsa uses a different standard CoW wants to benchmark against | **Peer research is complete (April 2, 2026).** Neither Kansas City nor Tulsa formally adopted a named standard — both built custom frameworks. This finding confirms the DAMA-as-implementation-guide approach and does not require a change to the recommendation |
 | CoW receives federal funding with NIST compliance requirements | Add NIST CSF or NIST SP 800-53 as a co-primary framework alongside DAMA |
 | CoW's primary near-term driver is Police Dept. CJIS compliance | Prioritize NIST SP 800-53 (security controls) alongside DAMA |
 | City leadership has already committed to ISO certification | Shift to ISO 8000 as primary; supplement with DAMA governance-specific KAs |
